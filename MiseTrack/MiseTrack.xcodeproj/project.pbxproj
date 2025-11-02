@@ -29,9 +29,32 @@
 		A71B51DE2EB7C01400AD2F96 /* MiseTrackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiseTrackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A71B52012EB7C76D00AD2F96 /* Exceptions for "MiseTrack" folder in "MiseTrackTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				RecipesView.swift,
+				SaucesView.swift,
+			);
+			target = A71B51D32EB7C01400AD2F96 /* MiseTrackTests */;
+		};
+		A71B52022EB7C76D00AD2F96 /* Exceptions for "MiseTrack" folder in "MiseTrackUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				RecipesView.swift,
+				SaucesView.swift,
+			);
+			target = A71B51DD2EB7C01400AD2F96 /* MiseTrackUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A71B51C92EB7C01300AD2F96 /* MiseTrack */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A71B52012EB7C76D00AD2F96 /* Exceptions for "MiseTrack" folder in "MiseTrackTests" target */,
+				A71B52022EB7C76D00AD2F96 /* Exceptions for "MiseTrack" folder in "MiseTrackUITests" target */,
+			);
 			path = MiseTrack;
 			sourceTree = "<group>";
 		};

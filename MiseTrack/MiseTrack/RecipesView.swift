@@ -9,7 +9,10 @@ import SwiftUI
 
 struct RecipesView: View {
     var body: some View {
-        Text("Recipes Screen")
+        ZStack {
+            Color.base.ignoresSafeArea(edges: .top)
+            Text("Recipes List")
+        }
     }
 }
 

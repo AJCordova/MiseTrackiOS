@@ -9,10 +9,13 @@ import SwiftUI
 
 struct SaucesView: View {
     var body: some View {
-        Text("Sauces List")
+        ZStack {
+            Color.base.ignoresSafeArea(edges: .top)
+            Text("Sauces List")
+        }
     }
 }
 
 #Preview {
-    RecipesView()
+    SaucesView()
 }

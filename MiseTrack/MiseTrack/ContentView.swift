@@ -9,14 +9,22 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        TabView {
-            Tab("Sauces", systemImage: "list.star") {
-                SaucesView()
-            }
-            Tab("Recipes", systemImage: "book.pages") {
-                RecipesView()
+        VStack {
+            TabView {
+                Tab("Sauces", systemImage: "list.star") {
+                    SaucesView()
+                }
+                Tab("Recipes", systemImage: "book.pages") {
+                    RecipesView()
+                }
             }
         }
+        .onAppear() {
+            let standardAppearance = UITabBarAppearance()
+            standardAppearance.shadowColor = UIColor(Color.divider)
+            UITabBar.appearance().standardAppearance.shadowColor = UIColor(Color.divider)
+        }
+        
     }
 }
 

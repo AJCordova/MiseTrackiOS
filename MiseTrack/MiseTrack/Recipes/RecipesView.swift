@@ -8,10 +8,17 @@
 import SwiftUI
 
 struct RecipesView: View {
+    
+    @State var recipesList = []
+    @ViewBuilder
     var body: some View {
         ZStack {
             Color.base.ignoresSafeArea(edges: .top)
-            Text("Recipes List")
+            VStack {
+                if recipesList.isEmpty {
+                    EmptyListView(listName: "recipes")
+                }
+            }
         }
     }
 }

@@ -21,10 +21,9 @@ struct ContentView: View {
         }
         .onAppear() {
             let standardAppearance = UITabBarAppearance()
-            standardAppearance.shadowColor = UIColor(Color.divider)
+            standardAppearance.shadowColor = UIColor(Color.black)
             UITabBar.appearance().standardAppearance.shadowColor = UIColor(Color.divider)
         }
-        
     }
 }
 

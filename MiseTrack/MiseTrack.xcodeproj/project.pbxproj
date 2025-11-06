@@ -37,16 +37,16 @@
 		A71B52012EB7C76D00AD2F96 /* Exceptions for "MiseTrack" folder in "MiseTrackTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				RecipesView.swift,
-				SaucesView.swift,
+				Recipes/RecipesView.swift,
+				Sauces/SaucesView.swift,
 			);
 			target = A71B51D32EB7C01400AD2F96 /* MiseTrackTests */;
 		};
 		A71B52022EB7C76D00AD2F96 /* Exceptions for "MiseTrack" folder in "MiseTrackUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				RecipesView.swift,
-				SaucesView.swift,
+				Recipes/RecipesView.swift,
+				Sauces/SaucesView.swift,
 			);
 			target = A71B51DD2EB7C01400AD2F96 /* MiseTrackUITests */;
 		};

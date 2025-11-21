@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A71DCF2A2ED0F0FA00ABE565 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = A71DCF292ED0F0FA00ABE565 /* Models */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		A71B51D52EB7C01400AD2F96 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -46,6 +50,13 @@
 			);
 			target = A71B51DD2EB7C01400AD2F96 /* MiseTrackUITests */;
 		};
+		A71DCF272ED0ECD400ABE565 /* Exceptions for "Packages" folder in "MiseTrack" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Base/Models,
+			);
+			target = A71B51C62EB7C01300AD2F96 /* MiseTrack */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -68,6 +79,14 @@
 			path = MiseTrackUITests;
 			sourceTree = "<group>";
 		};
+		A71DCF202ED0EB6F00ABE565 /* Packages */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A71DCF272ED0ECD400ABE565 /* Exceptions for "Packages" folder in "MiseTrack" target */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A71DCF2A2ED0F0FA00ABE565 /* Models in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,9 +118,11 @@
 		A71B51BE2EB7C01300AD2F96 = {
 			isa = PBXGroup;
 			children = (
+				A71DCF202ED0EB6F00ABE565 /* Packages */,
 				A71B51C92EB7C01300AD2F96 /* MiseTrack */,
 				A71B51D72EB7C01400AD2F96 /* MiseTrackTests */,
 				A71B51E12EB7C01400AD2F96 /* MiseTrackUITests */,
+				A71DCF282ED0F0FA00ABE565 /* Frameworks */,
 				A71B51C82EB7C01300AD2F96 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -113,6 +135,13 @@
 				A71B51DE2EB7C01400AD2F96 /* MiseTrackUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A71DCF282ED0F0FA00ABE565 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,9 +161,11 @@
 			);
 			fileSystemSynchronizedGroups = (
 				A71B51C92EB7C01300AD2F96 /* MiseTrack */,
+				A71DCF202ED0EB6F00ABE565 /* Packages */,
 			);
 			name = MiseTrack;
 			packageProductDependencies = (
+				A71DCF292ED0F0FA00ABE565 /* Models */,
 			);
 			productName = MiseTrack;
 			productReference = A71B51C72EB7C01300AD2F96 /* MiseTrack.app */;
@@ -587,6 +618,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A71DCF292ED0F0FA00ABE565 /* Models */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Models;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A71B51BF2EB7C01300AD2F96 /* Project object */;
 }

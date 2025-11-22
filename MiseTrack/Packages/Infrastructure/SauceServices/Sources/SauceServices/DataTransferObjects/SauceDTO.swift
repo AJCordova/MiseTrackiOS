@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import DataService
 import Models
 
 public struct SauceDTO: Codable, Identifiable {

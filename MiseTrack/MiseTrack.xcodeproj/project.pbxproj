@@ -54,6 +54,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Base/Models,
+				Infrastructure/SauceServices,
 			);
 			target = A71B51C62EB7C01300AD2F96 /* MiseTrack */;
 		};

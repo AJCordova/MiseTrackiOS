@@ -11,14 +11,14 @@ public struct Recipe: Identifiable, Codable {
     public let ingredients: [Ingredient]
     public let instructions: [String]
     public let yieldUnit: String 
-    public let yieldQuantity: Double?
+    public let quantity: Double?
     
-    public init(id: String, name: String, ingredients: [Ingredient], instructions: [String], yieldUnit: String, yieldQuantity: Double?) {
+    public init(id: String, name: String, ingredients: [Ingredient], instructions: [String], yieldUnit: String, quantity: Double?) {
         self.id = id
         self.name = name
         self.ingredients = ingredients
         self.instructions = instructions
         self.yieldUnit = yieldUnit
-        self.yieldQuantity = yieldQuantity
+        self.quantity = quantity
     }
 }

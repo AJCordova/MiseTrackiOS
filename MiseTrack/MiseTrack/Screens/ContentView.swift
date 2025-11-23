@@ -20,16 +20,11 @@ struct ContentView: View {
                 }
             }
         }
-        //Test
         .onAppear() {
             let standardAppearance = UITabBarAppearance()
             standardAppearance.shadowColor = UIColor(Color.divider)
             UITabBar.appearance().standardAppearance = standardAppearance
         }
-        .task {
-            _ = await DataService()
-        }
-        // Test
     }
 }
 

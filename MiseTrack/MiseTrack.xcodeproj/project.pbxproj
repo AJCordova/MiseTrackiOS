@@ -57,6 +57,7 @@
 			membershipExceptions = (
 				Base/Models,
 				Infrastructure/DataService,
+				Infrastructure/Firebase,
 				Infrastructure/SauceServices,
 			);
 			target = A71B51C62EB7C01300AD2F96 /* MiseTrack */;

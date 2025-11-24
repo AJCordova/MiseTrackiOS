@@ -17,7 +17,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../../Base/Models"),
-        .package(path: "../Firebase")
+        .package(path: "../FirebaseServices")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -26,7 +26,7 @@ let package = Package(
             name: "DataService",
             dependencies: [
                 .product(name: "Models", package: "Models"),
-                .product(name: "Firebase", package: "Firebase"),
+                .product(name: "FirebaseServices", package: "FirebaseServices"),
             ]
         ),
         .testTarget(

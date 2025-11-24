@@ -1,7 +1,6 @@
 // The Swift Programming Language
 // https://docs.swift.org/swift-book
 
-//            let _ = try await firestoreTest()
 import Foundation
 import Models
 

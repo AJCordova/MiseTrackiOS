@@ -37,8 +37,8 @@ public struct QueryReference {
         return QueryReference(collectionReference: collectionReference, query: newQuery)
     }
     
-    public func order(by: String, descending: Bool = false) -> QueryReference {
-        let newQuery = collectionReference.order(by: `by`, descending: descending)
+    public func order(by field: String, descending: Bool = false) -> QueryReference {
+        let newQuery = collectionReference.order(by: field, descending: descending)
         return QueryReference(collectionReference: collectionReference, query: newQuery)
     }
     

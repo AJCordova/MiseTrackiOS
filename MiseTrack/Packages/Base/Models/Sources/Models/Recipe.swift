@@ -8,17 +8,25 @@
 public struct Recipe: Identifiable, Codable {
     public let id: String
     public let name: String
+    public let displayName: String
     public let ingredients: [Ingredient]
     public let instructions: [String]
-    public let yieldUnit: String 
-    public let quantity: Double?
+    public let unit: String
+    public let volumeMl: Double
     
-    public init(id: String, name: String, ingredients: [Ingredient], instructions: [String], yieldUnit: String, quantity: Double?) {
+    public init(id: String,
+                name: String,
+                displayName: String,
+                ingredients: [Ingredient],
+                instructions: [String],
+                unit: String,
+                volumeMl: Double) {
         self.id = id
         self.name = name
+        self.displayName = displayName
         self.ingredients = ingredients
         self.instructions = instructions
-        self.yieldUnit = yieldUnit
-        self.quantity = quantity
+        self.unit = unit
+        self.volumeMl = volumeMl
     }
 }

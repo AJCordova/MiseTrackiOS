@@ -6,20 +6,24 @@
 //
 import Foundation
 
-public struct Sauce: Identifiable, Codable {
+public struct Sauce: Identifiable, Codable, Sendable {
     public let id: String
     public let name: String
     public var currentQuantity: Double
     public var unit: String
-    public var batchDate: Date?
-    public var status: String
+    public var batchDate: Date
     
-    public init(id: String, name: String, currentQuantity: Double, unit: String, batchDate: Date? = nil, status: String) {
+    public init(id: String,
+                name: String,
+                currentQuantity: Double,
+                unit: String,
+                batchDate: Date) {
         self.id = id
         self.name = name
         self.currentQuantity = currentQuantity
         self.unit = unit
         self.batchDate = batchDate
-        self.status = status
     }
 }
+
+// TODO: computed properties for quantity level, status

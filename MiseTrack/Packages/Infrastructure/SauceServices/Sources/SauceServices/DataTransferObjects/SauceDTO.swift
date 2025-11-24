@@ -12,11 +12,11 @@ import Models
 public struct SauceDTO: Codable, Identifiable {
     public let id: String
     let name: String
-    let batchDate: Date?
+    let batchDate: Date
     var currentQuantity: Double
     var unit: String
     
-    public init(id: String = UUID().uuidString, name: String, batchDate: Date?, currentQuantity: Double, unit: String) {
+    public init(id: String = UUID().uuidString, name: String, batchDate: Date, currentQuantity: Double, unit: String) {
         self.id = id
         self.name = name
         self.batchDate = batchDate
@@ -29,8 +29,7 @@ public struct SauceDTO: Codable, Identifiable {
               name: name,
               currentQuantity: currentQuantity,
               unit: unit,
-              batchDate: batchDate,
-              status: "" // should check if current quantity is under threshhold (remote config) or batchdata not exceeding storage time limit (remote config)
+              batchDate: batchDate
         )
     }
 }

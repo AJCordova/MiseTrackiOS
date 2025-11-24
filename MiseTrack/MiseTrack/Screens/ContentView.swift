@@ -26,10 +26,6 @@ struct ContentView: View {
             standardAppearance.shadowColor = UIColor(Color.divider)
             UITabBar.appearance().standardAppearance = standardAppearance
         }
-        .task {
-            _ = await DataService()
-        }
-        // Test
     }
 }
 

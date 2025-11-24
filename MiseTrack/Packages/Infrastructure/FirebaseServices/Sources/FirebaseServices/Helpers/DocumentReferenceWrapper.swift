@@ -25,18 +25,23 @@ public struct DocumentReferenceWrapper {
     }
     
     public func setData<T: Encodable>(_ data: T) async throws {
+        let encoded: [String: Any]
         do {
-            let encoded = try Firestore.Encoder().encode(data)
-            try await documentRef.setData(encoded)
+            encoded = try Firestore.Encoder().encode(data)
         } catch {
             throw FirebaseClientError.encodingFailed(error)
+        }
+        do {
+            try await documentRef.setData(encoded)
+        } catch {
+            throw FirebaseClientError.operationFailed(error)
         }
     }
     
     public func updateData(_ data: [String: Any]) async throws {
         do {
             try await documentRef.updateData(data)
-            print("✅ Firebase: Document updated")
+            // add logging
         } catch {
             throw FirebaseClientError.operationFailed(error)
         }
@@ -45,7 +50,7 @@ public struct DocumentReferenceWrapper {
     public func delete() async throws {
         do {
             try await documentRef.delete()
-            print("✅ Firebase: Document deleted")
+            // add logging
         } catch {
             throw FirebaseClientError.operationFailed(error)
         }

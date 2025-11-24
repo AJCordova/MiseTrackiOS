@@ -17,15 +17,12 @@ public struct QueryReference {
     }
     
     public func getDocuments() async throws -> [DocumentSnapshot] {
-        var documents: [DocumentSnapshot] = []
         do {
             let snapshot = try await (query ?? collectionReference).getDocuments()
-            documents = snapshot.documents
+            return snapshot.documents
         } catch {
             throw FirebaseClientError.operationFailed(error)
         }
-        
-        return documents
     }
     
     public func document(_ id: String) -> DocumentReferenceWrapper {
@@ -33,14 +30,20 @@ public struct QueryReference {
     }
     
     public func whereField(_ field: String, isEqualTo value: Any) -> QueryReference {
-        let newQuery = collectionReference.whereField(field, isEqualTo: value)
+        let base: Query = query ?? collectionReference
+        let newQuery = base.whereField(field, isEqualTo: value)
         return QueryReference(collectionReference: collectionReference, query: newQuery)
     }
     
     public func order(by field: String, descending: Bool = false) -> QueryReference {
-        let newQuery = collectionReference.order(by: field, descending: descending)
+        let base: Query = query ?? collectionReference
+        let newQuery = base.order(by: field, descending: descending)
         return QueryReference(collectionReference: collectionReference, query: newQuery)
     }
     
-    
+    public func limit(to limit: Int) -> QueryReference {
+        let base: Query = query ?? collectionReference
+        let newQuery = base.limit(to: limit)
+        return QueryReference(collectionReference: collectionReference, query: newQuery)
+    }
 }

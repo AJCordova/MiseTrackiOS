@@ -1,28 +1,14 @@
 // The Swift Programming Language
 // https://docs.swift.org/swift-book
 
-public struct DataService: Sendable {
-    
-    public init() {}
-//    private let db: Firestore
-//    public init() async {
-//        self.db = Firestore.firestore()
-//        do {
 //            let _ = try await firestoreTest()
-//        } catch {
-//            print("Error on firestoreTest")
-//        }
-//    }
-//    
-//    private func firestoreTest() async throws {
-//        do {
-//            let snapshot = try await db.collection("Sauce").getDocuments()
-//            for document in snapshot.documents {
-//                print("\(document.documentID) => \(document.data())")
-//            }
-//        } catch {
-//            print("Error reading document")
-//        }
-//    }
+import Foundation
+import Models
+
+public final class DataService: Sendable {
+    public static let shared = DataService()
     
+    public func makeSauceRepository() -> SauceRepositoryProtocol {
+        return FirebaseSauceRepository()
+    }
 }

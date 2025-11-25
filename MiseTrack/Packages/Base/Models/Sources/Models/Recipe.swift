@@ -5,7 +5,7 @@
 //  Created by Jireh Cordova on 21/11/2025.
 //
 
-public struct Recipe: Identifiable, Codable {
+public struct Recipe: Identifiable, Codable, Sendable {
     public let id: String
     public let name: String
     public let displayName: String

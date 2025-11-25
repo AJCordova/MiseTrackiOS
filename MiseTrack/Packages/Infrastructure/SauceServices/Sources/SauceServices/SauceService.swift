@@ -20,11 +20,14 @@ public class SauceService: SauceServicesProtocol {
         return try await repository.fetchAll()
     }
     
-    public func getSauce(id: UUID) async throws -> Sauce {
-        return try await repository.fetch(id: id.uuidString)
+    public func getSauce(id: String) async throws -> Sauce {
+        return try await repository.fetch(id: id)
     }
     
-    public func createSauce(name: String, currentQuantity: Double, unit: String, batchDate: Date) async throws -> Sauce {
+    public func createSauce(name: String,
+                            currentQuantity: Double,
+                            unit: String,
+                            batchDate: Date) async throws -> Sauce {
         
         guard !name.isEmpty else {
             throw SauceServiceError.invalidInput("Name cannot be empty")

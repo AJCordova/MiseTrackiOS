@@ -9,8 +9,8 @@ import Models
 
 public protocol RecipeRepositoryProtocol: Sendable {
     func fetchAll() async throws -> [Recipe]
-    func fetch(id: UUID) async throws -> Recipe
-    func create(_ sauce: Recipe) async throws -> Recipe
-    func update(_ sauce: Recipe) async throws -> Recipe
-    func delete(id: UUID) async throws
+    func fetch(id: String) async throws -> Recipe
+    func create(_ recipe: Recipe) async throws -> Recipe
+    func update(_ recipe: Recipe) async throws -> Recipe
+    func delete(id: String) async throws
 }

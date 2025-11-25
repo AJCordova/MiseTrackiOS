@@ -10,4 +10,8 @@ public final class DataService: Sendable {
     public func makeSauceRepository() -> SauceRepositoryProtocol {
         return FirebaseSauceRepository()
     }
+    
+    public func makeRecipeRepository() -> RecipeRepositoryProtocol {
+        return FirebaseRecipeRepository()
+    }
 }

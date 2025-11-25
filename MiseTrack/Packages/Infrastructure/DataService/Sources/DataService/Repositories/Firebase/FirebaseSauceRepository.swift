@@ -17,25 +17,20 @@ public actor FirebaseSauceRepository: SauceRepositoryProtocol {
         self.firebaseClient = firebaseClient
     }
     
-    // TODO: Review implementation
-    public func fetchAll() async throws -> [Models.Sauce] {
+    public func fetchAll() async throws -> [Sauce] {
         let records = try await firebaseClient
             .collection(collectionName)
             .order(by: "batchdate")
             .getDocuments()
         
-        let sauces = records.compactMap { sauce in
-            do {
-                return try sauce.data(as: Sauce.self)
-            } catch {
-                return nil
-            }
+        let sauces = try records.map { record in
+            try record.data(as: Sauce.self)
         }
         
         return sauces
     }
     
-    public func fetch(id: String) async throws -> Models.Sauce? {
+    public func fetch(id: String) async throws -> Sauce {
         let record = try await firebaseClient
             .collection(collectionName)
             .document(id)
@@ -44,7 +39,7 @@ public actor FirebaseSauceRepository: SauceRepositoryProtocol {
         return try record.data(as: Sauce.self)
     }
     
-    public func create(_ sauce: Models.Sauce) async throws -> Models.Sauce? {
+    public func create(_ sauce: Sauce) async throws -> Sauce {
         try await firebaseClient
             .collection(collectionName)
             .document(sauce.id)
@@ -53,7 +48,7 @@ public actor FirebaseSauceRepository: SauceRepositoryProtocol {
         return sauce
     }
     
-    public func update(_ sauce: Models.Sauce) async throws -> Models.Sauce? {
+    public func update(_ sauce: Sauce) async throws -> Sauce {
         try await firebaseClient
             .collection(collectionName)
             .document(sauce.id)

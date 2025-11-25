@@ -24,6 +24,7 @@ public struct DocumentReferenceWrapper {
         }
     }
     
+    // Alternative setup that breaks layered dependency pattern
     public func setData<T: Encodable>(_ data: T) async throws {
         let encoded: [String: Any]
         
@@ -35,6 +36,14 @@ public struct DocumentReferenceWrapper {
         
         do {
             try await documentRef.setData(encoded)
+        } catch {
+            throw FirebaseClientError.operationFailed(error)
+        }
+    }
+    
+    public func setData(_ data: [String: Any]) async throws {
+        do {
+            try await documentRef.setData(data)
         } catch {
             throw FirebaseClientError.operationFailed(error)
         }

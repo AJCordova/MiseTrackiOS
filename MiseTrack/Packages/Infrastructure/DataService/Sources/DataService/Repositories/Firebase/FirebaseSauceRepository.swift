@@ -11,7 +11,7 @@ import FirebaseServices
 
 public actor FirebaseSauceRepository: SauceRepositoryProtocol {
     private let firebaseClient: FirebaseClient
-    private let collectionName = "sauce"
+    private let collectionName = "sauces"
     
     public init(firebaseClient: FirebaseClient = .shared) {
         self.firebaseClient = firebaseClient
@@ -20,11 +20,16 @@ public actor FirebaseSauceRepository: SauceRepositoryProtocol {
     public func fetchAll() async throws -> [Sauce] {
         let records = try await firebaseClient
             .collection(collectionName)
-            .order(by: "batchdate")
+            .order(by: "name")
             .getDocuments()
         
-        let sauces = try records.map { record in
-            try record.data(as: Sauce.self)
+        let sauces = records.map { record in
+            let data = record.data()
+            return Sauce(id: record.documentID,
+                         name: data?["name"] as? String ?? "",
+                         currentQuantity: data?["currentQuantity"] as? Double ?? 0.00,
+                         unit: data?["unit"] as? String ?? "mL",
+                         batchDate: data?["batchDate"] as? Date ?? Date.now)
         }
         
         return sauces

@@ -16,21 +16,16 @@ struct ContentView: View {
     @State var sauces: [Sauce] = []
     @State var recipes: [Recipe] = []
     var body: some View {
-        VStack {
-            TabView {
-                Tab("Sauces", systemImage: "list.star") {
-                    SaucesView()
+        TabView {
+            SaucesView()
+                .tabItem {
+                    Label("Sauces", systemImage: "drop.fill")
                 }
-                Tab("Recipes", systemImage: "book.pages") {
-                    RecipesView()
+            
+            RecipesView()
+                .tabItem {
+                    Label("Recipes", systemImage: "book.fill")
                 }
-            }
-        }
-        //Test
-        .onAppear() {
-            let standardAppearance = UITabBarAppearance()
-            standardAppearance.shadowColor = UIColor(Color.divider)
-            UITabBar.appearance().standardAppearance = standardAppearance
         }
         .task {
             do {

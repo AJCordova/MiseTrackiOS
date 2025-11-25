@@ -34,9 +34,13 @@ struct ContentView: View {
         }
         .task {
             do {
-                let service = RecipeService()
-                recipes = try await service.getAllRecipes()
+                let recipeService = RecipeService()
+                recipes = try await recipeService.getAllRecipes()
                 print(recipes)
+                
+                let sauceService = SauceService()
+                sauces = try await sauceService.getAllSauces()
+                print(sauces)
             } catch {
                 // Handle or log the error as needed
                 print("Failed to load sauces: \(error)")

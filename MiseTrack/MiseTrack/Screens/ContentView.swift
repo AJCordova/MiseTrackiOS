@@ -9,10 +9,12 @@ import Foundation
 import SwiftUI
 import Models
 import SauceServices
+import RecipeServices
 
 struct ContentView: View {
     
     @State var sauces: [Sauce] = []
+    @State var recipes: [Recipe] = []
     var body: some View {
         VStack {
             TabView {
@@ -32,9 +34,9 @@ struct ContentView: View {
         }
         .task {
             do {
-                let service = SauceService()
-                sauces = try await service.getAllSauces()
-                print(sauces)
+                let service = RecipeService()
+                recipes = try await service.getAllRecipes()
+                print(recipes)
             } catch {
                 // Handle or log the error as needed
                 print("Failed to load sauces: \(error)")

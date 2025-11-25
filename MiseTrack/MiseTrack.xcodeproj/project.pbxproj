@@ -10,6 +10,7 @@
 		A71DCF2A2ED0F0FA00ABE565 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = A71DCF292ED0F0FA00ABE565 /* Models */; };
 		A725DF902ED228CD001F80DE /* SauceServices in Frameworks */ = {isa = PBXBuildFile; productRef = A725DF8F2ED228CD001F80DE /* SauceServices */; };
 		A725DF922ED228D3001F80DE /* DataService in Frameworks */ = {isa = PBXBuildFile; productRef = A725DF912ED228D3001F80DE /* DataService */; };
+		A7510F1D2ED5FF0A00409BC2 /* RecipeServices in Frameworks */ = {isa = PBXBuildFile; productRef = A7510F1C2ED5FF0A00409BC2 /* RecipeServices */; };
 		A7796A562ED3819900C147D1 /* FirebaseServices in Frameworks */ = {isa = PBXBuildFile; productRef = A7796A552ED3819900C147D1 /* FirebaseServices */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 				Base/Models,
 				Infrastructure/DataService,
 				Infrastructure/FirebaseServices,
+				Infrastructure/RecipeServices,
 				Infrastructure/SauceServices,
 			);
 			target = A71B51C62EB7C01300AD2F96 /* MiseTrack */;
@@ -100,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7510F1D2ED5FF0A00409BC2 /* RecipeServices in Frameworks */,
 				A725DF902ED228CD001F80DE /* SauceServices in Frameworks */,
 				A7796A562ED3819900C147D1 /* FirebaseServices in Frameworks */,
 				A71DCF2A2ED0F0FA00ABE565 /* Models in Frameworks */,
@@ -178,6 +181,7 @@
 				A725DF8F2ED228CD001F80DE /* SauceServices */,
 				A725DF912ED228D3001F80DE /* DataService */,
 				A7796A552ED3819900C147D1 /* FirebaseServices */,
+				A7510F1C2ED5FF0A00409BC2 /* RecipeServices */,
 			);
 			productName = MiseTrack;
 			productReference = A71B51C72EB7C01300AD2F96 /* MiseTrack.app */;
@@ -643,6 +647,10 @@
 		A725DF912ED228D3001F80DE /* DataService */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DataService;
+		};
+		A7510F1C2ED5FF0A00409BC2 /* RecipeServices */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RecipeServices;
 		};
 		A7796A552ED3819900C147D1 /* FirebaseServices */ = {
 			isa = XCSwiftPackageProductDependency;

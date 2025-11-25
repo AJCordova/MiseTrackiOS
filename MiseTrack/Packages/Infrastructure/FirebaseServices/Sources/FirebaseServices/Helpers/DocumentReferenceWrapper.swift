@@ -26,13 +26,31 @@ public struct DocumentReferenceWrapper {
     
     public func setData<T: Encodable>(_ data: T) async throws {
         let encoded: [String: Any]
+        
         do {
             encoded = try Firestore.Encoder().encode(data)
         } catch {
             throw FirebaseClientError.encodingFailed(error)
         }
+        
         do {
             try await documentRef.setData(encoded)
+        } catch {
+            throw FirebaseClientError.operationFailed(error)
+        }
+    }
+    
+    public func updateData<T: Encodable>(_ data: T) async throws {
+        let encoded: [String: Any]
+        
+        do {
+            encoded = try Firestore.Encoder().encode(data)
+        } catch {
+            throw FirebaseClientError.encodingFailed(error)
+        }
+        
+        do {
+            try await documentRef.updateData(encoded)
         } catch {
             throw FirebaseClientError.operationFailed(error)
         }

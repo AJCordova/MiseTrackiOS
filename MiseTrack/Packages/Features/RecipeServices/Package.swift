@@ -4,34 +4,34 @@
 import PackageDescription
 
 let package = Package(
-    name: "SauceServices",
+    name: "RecipeServices",
     platforms: [
         .iOS("18.4")
       ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "SauceServices",
-            targets: ["SauceServices"]
+            name: "RecipeServices",
+            targets: ["RecipeServices"]
         ),
     ],
     dependencies: [
         .package(path: "../../Base/Models"),
-        .package(path: "../DataService")
+        .package(path: "../../Infrastructure/DataService")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "SauceServices",
+            name: "RecipeServices",
             dependencies: [
                 .product(name: "Models", package: "Models"),
                 .product(name: "DataService", package: "DataService"),
             ]
         ),
         .testTarget(
-            name: "SauceServicesTests",
-            dependencies: ["SauceServices"]
+            name: "RecipeServicesTests",
+            dependencies: ["RecipeServices"]
         ),
     ]
 )

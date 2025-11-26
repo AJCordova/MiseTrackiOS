@@ -15,9 +15,10 @@ struct ContentView: View {
     
     @State var sauces: [Sauce] = []
     @State var recipes: [Recipe] = []
+    
     var body: some View {
         TabView {
-            SaucesView()
+            SauceListView()
                 .tabItem {
                     Label("Sauces", systemImage: "drop.fill")
                 }

@@ -37,6 +37,15 @@ struct SauceDetailsView: View {
             }
         }
         .navigationTitle(sauce.name)
+        .toolbar {
+            Button(action: {
+                // delete sauce
+            }) {
+                Image(systemName: "trash")
+                    .symbolRenderingMode(.monochrome)
+                    .foregroundStyle(.red)
+            }
+        }
     }
 }
 

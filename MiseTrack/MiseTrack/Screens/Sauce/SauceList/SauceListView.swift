@@ -52,6 +52,8 @@ struct SauceListView: View {
                 Button(action: {}) {
                     // Add
                     Image(systemName: "plus")
+                        .symbolRenderingMode(.monochrome)
+                        .foregroundStyle(.accent)
                 }
                 
                 Button(action: {}) {

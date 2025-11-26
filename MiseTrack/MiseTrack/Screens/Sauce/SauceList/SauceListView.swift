@@ -7,11 +7,18 @@
 
 import SwiftUI
 import SauceServices
+import RecipeServices
 
 struct SauceListView: View {
     @StateObject private var viewModel: SauceListViewModel
+    @State private var showCreateSauceView = false
     
-    public init(sauceService: SauceServicesProtocol = SauceService()) {
+    private let sauceService: SauceServicesProtocol
+    private let recipeService: RecipeServiceProtocol
+    
+    public init(sauceService: SauceServicesProtocol, recipeService: RecipeServiceProtocol) {
+        self.sauceService = sauceService
+        self.recipeService = recipeService
         _viewModel = StateObject(wrappedValue: SauceListViewModel(sauceService: sauceService))
     }
     
@@ -49,7 +56,7 @@ struct SauceListView: View {
             }
             .navigationTitle("Sauces")
             .toolbar {
-                Button(action: {}) {
+                Button(action: { showCreateSauceView = true }) {
                     // Add
                     Image(systemName: "plus")
                         .symbolRenderingMode(.monochrome)
@@ -61,13 +68,19 @@ struct SauceListView: View {
                     Image(systemName: "arrow.clockwise")
                 }
             }
+            .sheet(isPresented: $showCreateSauceView) {
+                CreateSauceView(isPresented: $showCreateSauceView) {
+                    viewModel.loadSauces()
+                }
+            }
         }
         .onAppear {
             viewModel.loadSauces()
+            print("Sauce on Appear called")
         }
     }
 }
 
 #Preview {
-    SauceListView()
+//    SauceListView()
 }

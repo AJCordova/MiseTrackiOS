@@ -12,13 +12,18 @@ import SauceServices
 import RecipeServices
 
 struct ContentView: View {
+    private let sauceService: SauceServicesProtocol
+    private let recipeService: RecipeServiceProtocol
     
-    @State var sauces: [Sauce] = []
-    @State var recipes: [Recipe] = []
+    public init(sauceService: SauceServicesProtocol = SauceService(),
+                recipeService: RecipeServiceProtocol = RecipeService()) {
+        self.sauceService = sauceService
+        self.recipeService = recipeService
+    }
     
     var body: some View {
         TabView {
-            SauceListView()
+            SauceListView(sauceService: sauceService, recipeService: recipeService)
                 .tabItem {
                     Label("Sauces", systemImage: "drop.fill")
                 }
@@ -28,20 +33,7 @@ struct ContentView: View {
                     Label("Recipes", systemImage: "book.fill")
                 }
         }
-        .task {
-            do {
-                let recipeService = RecipeService()
-                recipes = try await recipeService.getAllRecipes()
-                print(recipes)
-                
-                let sauceService = SauceService()
-                sauces = try await sauceService.getAllSauces()
-                print(sauces)
-            } catch {
-                // Handle or log the error as needed
-                print("Failed to load sauces: \(error)")
-            }
-        }
+        
     }
 }
 

@@ -42,8 +42,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Recipes/RecipesView.swift,
-				Screens/Sauce/SauceListView.swift,
-				Screens/Sauce/SauceListViewModel.swift,
+				Screens/Sauce/SauceList/SauceListView.swift,
+				Screens/Sauce/SauceList/SauceListViewModel.swift,
 				Screens/Sauce/SaucesView.swift,
 			);
 			target = A71B51D32EB7C01400AD2F96 /* MiseTrackTests */;
@@ -52,8 +52,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Recipes/RecipesView.swift,
-				Screens/Sauce/SauceListView.swift,
-				Screens/Sauce/SauceListViewModel.swift,
+				Screens/Sauce/SauceList/SauceListView.swift,
+				Screens/Sauce/SauceList/SauceListViewModel.swift,
 				Screens/Sauce/SaucesView.swift,
 			);
 			target = A71B51DD2EB7C01400AD2F96 /* MiseTrackUITests */;

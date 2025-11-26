@@ -23,17 +23,13 @@ class SauceListViewModel: ObservableObject {
     
     func loadSauces() {
         isLoading = true
-
-        // Capture the service locally to avoid sending `self` across actors
         let service = sauceService
 
         Task {
             do {
-                // Perform the async fetch off the main actor
                 let fetched = try await service.getAllSauces()
                 let sorted = fetched.sorted { $0.batchDate > $1.batchDate }
-
-                // Hop back to the main actor to update published properties
+                
                 await MainActor.run {
                     self.sauces = sorted
                     self.isLoading = false

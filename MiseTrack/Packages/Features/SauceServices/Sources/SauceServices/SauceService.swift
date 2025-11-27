@@ -42,9 +42,9 @@ public class SauceService: SauceServicesProtocol {
         return try await repository.create(sauce)
     }
     
-    public func updateSauceQuantity(id: UUID, currentQuantity: Double) async throws -> Sauce {
+    public func updateSauceQuantity(id: String, currentQuantity: Double) async throws -> Sauce {
         
-        let current = try await repository.fetch(id: id.uuidString)
+        let current = try await repository.fetch(id: id)
         let updated = Sauce(id: current.id,
                             name: current.name,
                             currentQuantity: currentQuantity,
@@ -54,7 +54,7 @@ public class SauceService: SauceServicesProtocol {
         return try await repository.update(updated)
     }
     
-    public func deleteSauce(id: UUID) async throws {
-        try await repository.delete(id: id.uuidString)
+    public func deleteSauce(id: String) async throws {
+        try await repository.delete(id: id)
     }
 }

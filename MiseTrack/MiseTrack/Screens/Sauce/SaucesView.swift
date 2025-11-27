@@ -20,6 +20,7 @@ struct SaucesView: View {
                 }
             }
         }
+        .navigationTitle("Sauces")
     }
 }
 

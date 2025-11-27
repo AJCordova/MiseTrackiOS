@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		A71DCF2A2ED0F0FA00ABE565 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = A71DCF292ED0F0FA00ABE565 /* Models */; };
-		A725DF902ED228CD001F80DE /* SauceServices in Frameworks */ = {isa = PBXBuildFile; productRef = A725DF8F2ED228CD001F80DE /* SauceServices */; };
 		A725DF922ED228D3001F80DE /* DataService in Frameworks */ = {isa = PBXBuildFile; productRef = A725DF912ED228D3001F80DE /* DataService */; };
-		A7510F1D2ED5FF0A00409BC2 /* RecipeServices in Frameworks */ = {isa = PBXBuildFile; productRef = A7510F1C2ED5FF0A00409BC2 /* RecipeServices */; };
+		A7510F572ED713D000409BC2 /* RecipeServices in Frameworks */ = {isa = PBXBuildFile; productRef = A7510F562ED713D000409BC2 /* RecipeServices */; };
+		A7510F592ED713D300409BC2 /* SauceServices in Frameworks */ = {isa = PBXBuildFile; productRef = A7510F582ED713D300409BC2 /* SauceServices */; };
 		A7796A562ED3819900C147D1 /* FirebaseServices in Frameworks */ = {isa = PBXBuildFile; productRef = A7796A552ED3819900C147D1 /* FirebaseServices */; };
 /* End PBXBuildFile section */
 
@@ -42,7 +42,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Recipes/RecipesView.swift,
-				Sauces/SaucesView.swift,
+				Screens/Sauce/SauceList/SauceListView.swift,
+				Screens/Sauce/SauceList/SauceListViewModel.swift,
+				Screens/Sauce/SaucesView.swift,
 			);
 			target = A71B51D32EB7C01400AD2F96 /* MiseTrackTests */;
 		};
@@ -50,7 +52,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Recipes/RecipesView.swift,
-				Sauces/SaucesView.swift,
+				Screens/Sauce/SauceList/SauceListView.swift,
+				Screens/Sauce/SauceList/SauceListViewModel.swift,
+				Screens/Sauce/SaucesView.swift,
 			);
 			target = A71B51DD2EB7C01400AD2F96 /* MiseTrackUITests */;
 		};
@@ -58,10 +62,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Base/Models,
+				Features/RecipeServices,
+				Features/SauceServices,
 				Infrastructure/DataService,
 				Infrastructure/FirebaseServices,
-				Infrastructure/RecipeServices,
-				Infrastructure/SauceServices,
 			);
 			target = A71B51C62EB7C01300AD2F96 /* MiseTrack */;
 		};
@@ -102,11 +106,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7510F1D2ED5FF0A00409BC2 /* RecipeServices in Frameworks */,
-				A725DF902ED228CD001F80DE /* SauceServices in Frameworks */,
 				A7796A562ED3819900C147D1 /* FirebaseServices in Frameworks */,
 				A71DCF2A2ED0F0FA00ABE565 /* Models in Frameworks */,
+				A7510F572ED713D000409BC2 /* RecipeServices in Frameworks */,
 				A725DF922ED228D3001F80DE /* DataService in Frameworks */,
+				A7510F592ED713D300409BC2 /* SauceServices in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,10 +182,10 @@
 			name = MiseTrack;
 			packageProductDependencies = (
 				A71DCF292ED0F0FA00ABE565 /* Models */,
-				A725DF8F2ED228CD001F80DE /* SauceServices */,
 				A725DF912ED228D3001F80DE /* DataService */,
 				A7796A552ED3819900C147D1 /* FirebaseServices */,
-				A7510F1C2ED5FF0A00409BC2 /* RecipeServices */,
+				A7510F562ED713D000409BC2 /* RecipeServices */,
+				A7510F582ED713D300409BC2 /* SauceServices */,
 			);
 			productName = MiseTrack;
 			productReference = A71B51C72EB7C01300AD2F96 /* MiseTrack.app */;
@@ -640,17 +644,17 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Models;
 		};
-		A725DF8F2ED228CD001F80DE /* SauceServices */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SauceServices;
-		};
 		A725DF912ED228D3001F80DE /* DataService */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DataService;
 		};
-		A7510F1C2ED5FF0A00409BC2 /* RecipeServices */ = {
+		A7510F562ED713D000409BC2 /* RecipeServices */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RecipeServices;
+		};
+		A7510F582ED713D300409BC2 /* SauceServices */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SauceServices;
 		};
 		A7796A552ED3819900C147D1 /* FirebaseServices */ = {
 			isa = XCSwiftPackageProductDependency;

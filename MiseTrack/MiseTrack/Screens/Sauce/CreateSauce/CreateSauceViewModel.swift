@@ -18,6 +18,7 @@ class CreateSauceViewModel: ObservableObject {
     @Published var scale: Double = 1.0
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var actualYield: Double = 0.00
     
     private let recipeService: RecipeServiceProtocol
     private let sauceService: SauceServicesProtocol
@@ -53,13 +54,14 @@ class CreateSauceViewModel: ObservableObject {
     func selectRecipe(_ recipe: Recipe) {
         self.selectedRecipe = recipe
         self.selectedRecipeID = recipe.id
-        
-        // sauce name?
+        self.actualYield = 0.00
+        self.scale = 1.0
     }
     
     func clearRecipe() {
         self.selectedRecipe = nil
         self.selectedRecipeID = nil
+        self.actualYield = 0.00
         self.scale = 1.0
     }
 }

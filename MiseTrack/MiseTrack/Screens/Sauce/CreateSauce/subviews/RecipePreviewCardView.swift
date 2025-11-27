@@ -45,11 +45,6 @@ struct RecipePreviewCardView: View {
                 
                 Spacer()
                 
-//                if isSelected {
-//                    Image(systemName: "checkmark.circle.fill")
-//                        .foregroundStyle(.green)
-//                        .font(.title2)
-//                }
                 if isSelected {
                     Button(action: onDeselect) {
                         Text("Deselect")
@@ -85,9 +80,9 @@ struct RecipePreviewCardView: View {
                         Text(ingredient.name)
                             .font(.caption)
                         Spacer()
-                        Text("\(String(format: "%.1f", ingredient.quantity)) \(ingredient.unit)")
+                        Text("\(String(format: "%.1f", ingredient.quantity * scale)) \(ingredient.unit)")
                             .font(.caption)
-                            .foregroundStyle(.second)
+                            .foregroundStyle(.secondary)
                     }
                 }
             }
@@ -96,8 +91,21 @@ struct RecipePreviewCardView: View {
                 VStack(alignment: .leading) {
                     Text("Scaled Yield")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
                     Text("\(String(format: "%.0f", scaledYield)) ml")
+                }
+            }
+            
+            if isSelected {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Instructions: ")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                    
+                    ForEach(Array(recipe.instructions.enumerated()), id: \.offset) { index, instruction in
+                        if index > 0 { Divider() }
+                        Text("\(index + 1). \(instruction)")
+                            .font(.caption)
+                    }
                 }
             }
         }

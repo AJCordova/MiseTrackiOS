@@ -42,9 +42,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Recipes/RecipesView.swift,
-				Screens/Sauce/SauceList/SauceListView.swift,
-				Screens/Sauce/SauceList/SauceListViewModel.swift,
-				Screens/Sauce/SaucesView.swift,
+				Screens/SauceScreens/SauceList/SauceListView.swift,
+				Screens/SauceScreens/SauceList/SauceListViewModel.swift,
+				Screens/SauceScreens/SaucesView.swift,
 			);
 			target = A71B51D32EB7C01400AD2F96 /* MiseTrackTests */;
 		};
@@ -52,9 +52,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Recipes/RecipesView.swift,
-				Screens/Sauce/SauceList/SauceListView.swift,
-				Screens/Sauce/SauceList/SauceListViewModel.swift,
-				Screens/Sauce/SaucesView.swift,
+				Screens/SauceScreens/SauceList/SauceListView.swift,
+				Screens/SauceScreens/SauceList/SauceListViewModel.swift,
+				Screens/SauceScreens/SaucesView.swift,
 			);
 			target = A71B51DD2EB7C01400AD2F96 /* MiseTrackUITests */;
 		};

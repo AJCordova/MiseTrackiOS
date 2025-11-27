@@ -46,10 +46,19 @@ struct CreateSauceView: View {
                             Text("No recipes available")
                                 .foregroundStyle(.second)
                         } else {
-                            
+                            VStack(spacing: 8) {
+                                ForEach(viewModel.recipes) { recipe in
+                                    RecipePreviewCardView(recipe: recipe,
+                                                          scale: viewModel.scale,
+                                                          isSelected: viewModel.selectedRecipeID == recipe.id,
+                                                          onSelect: { viewModel.selectRecipe(recipe) },
+                                                          onDeselect: { viewModel.clearRecipe() })
+                                }
+                            }
                         }
                     }
                 }
+                .padding()
             }
             .navigationTitle("Create Sauce")
             .toolbar {
@@ -66,6 +75,9 @@ struct CreateSauceView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            viewModel.loadRecipes()
         }
     }
 }

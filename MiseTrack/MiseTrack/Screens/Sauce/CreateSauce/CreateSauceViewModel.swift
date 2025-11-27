@@ -13,6 +13,7 @@ import Models
 @MainActor
 class CreateSauceViewModel: ObservableObject {
     @Published var recipes: [Recipe] = []
+    @Published var selectedRecipeID: String?
     @Published var selectedRecipe: Recipe?
     @Published var scale: Double = 1.0
     @Published var isLoading = false
@@ -32,7 +33,7 @@ class CreateSauceViewModel: ObservableObject {
         
         Task {
             do {
-                // store recipes in recipe servicesx
+                // store recipes in recipe services
                 let fetched = try await service.getAllRecipes()
                 
                 await MainActor.run {
@@ -47,6 +48,19 @@ class CreateSauceViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func selectRecipe(_ recipe: Recipe) {
+        self.selectedRecipe = recipe
+        self.selectedRecipeID = recipe.id
+        
+        // sauce name?
+    }
+    
+    func clearRecipe() {
+        self.selectedRecipe = nil
+        self.selectedRecipeID = nil
+        self.scale = 1.0
     }
 }
 

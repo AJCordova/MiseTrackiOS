@@ -5,12 +5,16 @@
 //  Created by Jireh Cordova on 21/11/2025.
 //
 
-public struct Ingredient: Codable, Sendable {
+import Foundation
+
+public struct Ingredient: Identifiable, Codable, Sendable {
+    public let id: String
     public let name: String
     public let quantity: Double
     public let unit: String
     
-    public init(name: String, quantity: Double, unit: String = "mL") {
+    public init(id: String, name: String, quantity: Double, unit: String = "mL") {
+        self.id = id
         self.name = name
         self.quantity = quantity
         self.unit = unit

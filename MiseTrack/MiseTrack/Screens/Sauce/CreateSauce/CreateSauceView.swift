@@ -84,7 +84,7 @@ struct CreateSauceView: View {
                     
                     if viewModel.actualYield > 0.00 {
                         Button("Create sauce") {
-                            // handle save
+                            viewModel.createSauceBatch()
                             isPresented = false
                             onSauceCreated()
                         }

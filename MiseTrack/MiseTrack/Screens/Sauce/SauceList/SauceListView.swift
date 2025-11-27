@@ -39,18 +39,6 @@ struct SauceListView: View {
                                 SauceListItemView(sauce: sauce)
                             }
                         }
-                        
-                        ForEach(viewModel.sauces) { sauce in
-                            NavigationLink(destination: SauceDetailsView(sauce: sauce)) {
-                                SauceListItemView(sauce: sauce)
-                            }
-                        }
-                        
-                        ForEach(viewModel.sauces) { sauce in
-                            NavigationLink(destination: SauceDetailsView(sauce: sauce)) {
-                                SauceListItemView(sauce: sauce)
-                            }
-                        }
                     }
                     .listRowSpacing(8.0)
                 }
@@ -64,8 +52,7 @@ struct SauceListView: View {
                         .foregroundStyle(.accent)
                 }
                 
-                Button(action: {}) {
-                    // Refresh
+                Button(action: { viewModel.loadSauces() }) {
                     Image(systemName: "arrow.clockwise")
                 }
             }

@@ -19,6 +19,9 @@ struct SauceListItemView: View {
                     .font(.subheadline)
                 Text("Expires: *config here*")
                     .font(.caption)
+                Spacer()
+                Text("Notes")
+                    .font(.footnote)
             }
             
             Spacer()

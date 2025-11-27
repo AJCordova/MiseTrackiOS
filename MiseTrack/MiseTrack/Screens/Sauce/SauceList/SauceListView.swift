@@ -52,6 +52,7 @@ struct SauceListView: View {
                             }
                         }
                     }
+                    .listRowSpacing(8.0)
                 }
             }
             .navigationTitle("Sauces")
@@ -69,14 +70,15 @@ struct SauceListView: View {
                 }
             }
             .sheet(isPresented: $showCreateSauceView) {
-                CreateSauceView(isPresented: $showCreateSauceView) {
+                CreateSauceView(isPresented: $showCreateSauceView,
+                                recipeService: recipeService,
+                                sauceService: sauceService) {
                     viewModel.loadSauces()
                 }
             }
         }
         .onAppear {
             viewModel.loadSauces()
-            print("Sauce on Appear called")
         }
     }
 }

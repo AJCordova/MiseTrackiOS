@@ -27,6 +27,8 @@ class SauceListViewModel: ObservableObject {
 
         Task {
             do {
+                // TODO: Remove task execution delay for sync workaround.
+                try await Task.sleep(for: .seconds(2))
                 let fetched = try await service.getAllSauces()
                 let sorted = fetched.sorted { $0.batchDate > $1.batchDate }
                 

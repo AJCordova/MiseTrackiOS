@@ -32,10 +32,11 @@ struct SauceListView: View {
                 if viewModel.sauces.isEmpty {
                     Text("No sauces yet")
                         .foregroundStyle(.secondaryText)
-                } else {
+                } else if !viewModel.isLoading {
                     List {
                         ForEach(viewModel.sauces) { sauce in
-                            NavigationLink(destination: SauceDetailsView(sauce: sauce)) {
+                            NavigationLink(destination: SauceDetailsView(sauce: sauce,
+                                                                         sauceService: sauceService)) {
                                 SauceListItemView(sauce: sauce)
                             }
                         }
@@ -63,9 +64,9 @@ struct SauceListView: View {
                     viewModel.loadSauces()
                 }
             }
-        }
-        .onAppear {
-            viewModel.loadSauces()
+            .onAppear {
+                viewModel.loadSauces()
+            }
         }
     }
 }

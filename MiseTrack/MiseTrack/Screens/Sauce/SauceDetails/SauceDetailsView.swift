@@ -7,11 +7,26 @@
 
 import SwiftUI
 import Models
+import SauceServices
+import RecipeServices
 
 struct SauceDetailsView: View {
-    let sauce: Sauce
-    @State private var consumeAmount: String = ""
+    @StateObject private var viewModel: SauceDetailsViewModel
+    @State private var consumeAmount: Double = 0.00
+    @Environment(\.dismiss) private var dismiss
+    
     private let maxAmount = 2000.00
+    let sauce: Sauce
+    
+    private let sauceService: SauceServicesProtocol
+    
+    public init(sauce: Sauce,
+                sauceService: SauceServicesProtocol) {
+        self.sauce = sauce
+        self.sauceService = sauceService
+        _viewModel = StateObject(wrappedValue: SauceDetailsViewModel(sauceService: sauceService,
+                                                                     sauce: sauce))
+    }
     
     var body: some View {
         Form {
@@ -28,10 +43,11 @@ struct SauceDetailsView: View {
             
             Section("Consume") {
                 HStack {
-                    TextField("Amount (ml)", text: $consumeAmount)
+                    TextField("Amount (ml)", value: $viewModel.amount, format: .number)
                         .keyboardType(.decimalPad)
                     Button("Consume") {
-                        //
+                        viewModel.consume()
+                        dismiss()
                     }
                 }
             }
@@ -39,7 +55,8 @@ struct SauceDetailsView: View {
         .navigationTitle(sauce.name)
         .toolbar {
             Button(action: {
-                // delete sauce
+                viewModel.delete()
+                dismiss()
             }) {
                 Image(systemName: "trash")
                     .symbolRenderingMode(.monochrome)
@@ -55,5 +72,5 @@ struct SauceDetailsView: View {
                              currentQuantity: 500.00,
                              unit: "mL",
                              batchDate: Date())
-    SauceDetailsView(sauce: sauce)
+//    SauceDetailsView(sauce: sauce)
 }

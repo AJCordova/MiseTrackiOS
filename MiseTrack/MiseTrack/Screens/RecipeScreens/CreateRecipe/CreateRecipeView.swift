@@ -127,6 +127,7 @@ struct CreateRecipeView: View {
                             .font(.headline)
                         TextField("\(String(format: "%.2f", 0.00))", value: $viewModel.quantity, format: .number)
                             .keyboardType(.decimalPad)
+                            .textFieldStyle(.roundedBorder)
                     }
                     .padding()
                     .background(Color(.systemGray6))

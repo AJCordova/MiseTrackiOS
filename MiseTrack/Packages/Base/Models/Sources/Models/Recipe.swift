@@ -7,12 +7,12 @@
 
 public struct Recipe: Identifiable, Codable, Sendable {
     public let id: String
-    public let name: String
-    public let displayName: String
-    public let ingredients: [Ingredient]
-    public let instructions: [String]
+    public var name: String
+    public var displayName: String
+    public var ingredients: [Ingredient]
+    public var instructions: [String]
     public let unit: Units
-    public let volumeMl: Double
+    public var volumeMl: Double
     
     public init(id: String,
                 name: String,

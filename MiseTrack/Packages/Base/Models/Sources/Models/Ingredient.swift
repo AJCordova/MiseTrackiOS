@@ -9,11 +9,11 @@ import Foundation
 
 public struct Ingredient: Identifiable, Codable, Sendable {
     public let id: String
-    public let name: String
-    public let quantity: Double
-    public let unit: Units
+    public var name: String
+    public var quantity: Double
+    public var unit: Units
     
-    public init(id: String, name: String, quantity: Double, unit: Units = .milliliter) {
+    public init(id: String = UUID().uuidString, name: String, quantity: Double, unit: Units = .milliliter) {
         self.id = id
         self.name = name
         self.quantity = quantity

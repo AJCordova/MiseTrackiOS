@@ -35,7 +35,7 @@ class CreateRecipeViewModel: ObservableObject {
         }
         
         let validInstructions = instructions.filter { !$0.isEmpty }
-        _ = try await recipeService.createRecipe(name: name.removingAllWhiteSpaceAndNewLines().lowercased(),
+        _ = try await recipeService.createRecipe(name: createNormalizedString(from: name),
                                                  displayName: name,
                                                  ingredients: validIngredients,
                                                  instructions: validInstructions,
@@ -44,6 +44,8 @@ class CreateRecipeViewModel: ObservableObject {
         shouldDismissView = true
     }
     
-    
+    private func createNormalizedString(from value: String) -> String {
+        return value.removingAllWhiteSpaceAndNewLines().lowercased()
+    }
 }
 

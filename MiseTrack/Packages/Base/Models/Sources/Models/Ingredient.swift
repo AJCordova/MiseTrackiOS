@@ -11,9 +11,9 @@ public struct Ingredient: Identifiable, Codable, Sendable {
     public let id: String
     public let name: String
     public let quantity: Double
-    public let unit: String
+    public let unit: Units
     
-    public init(id: String, name: String, quantity: Double, unit: String = "mL") {
+    public init(id: String, name: String, quantity: Double, unit: Units = .milliliter) {
         self.id = id
         self.name = name
         self.quantity = quantity

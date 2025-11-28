@@ -10,13 +10,13 @@ public struct Sauce: Identifiable, Codable, Sendable {
     public let id: String
     public let name: String
     public var currentQuantity: Double
-    public var unit: String
+    public var unit: Units
     public var batchDate: Date
     
     public init(id: String,
                 name: String,
                 currentQuantity: Double,
-                unit: String,
+                unit: Units,
                 batchDate: Date) {
         self.id = id
         self.name = name

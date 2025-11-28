@@ -35,7 +35,7 @@ struct SauceDetailsView: View {
             }
             
             Section("Quantity") {
-                Text("Current Quantity: \(String(format: "%.2f", sauce.currentQuantity)) \(sauce.unit)")
+                Text("Current Quantity: \(String(format: "%.2f", sauce.currentQuantity)) \(sauce.unit.rawValue)")
 
                 ProgressView(value: sauce.currentQuantity / maxAmount)
             }

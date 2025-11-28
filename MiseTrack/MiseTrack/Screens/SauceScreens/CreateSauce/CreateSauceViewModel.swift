@@ -74,7 +74,7 @@ class CreateSauceViewModel: ObservableObject {
             do {
                 _ = try await service.createSauce(name: recipe.displayName,
                                                   currentQuantity: actualYield,
-                                                  unit: "ml",
+                                                  unit: .milliliter,
                                                   batchDate: Date())
                 
                 await MainActor.run { [weak self] in

@@ -17,24 +17,6 @@ public actor FirebaseSauceRepository: SauceRepositoryProtocol {
         self.firebaseClient = firebaseClient
     }
     
-//    public func fetchAll() async throws -> [Sauce] {
-//        let records = try await firebaseClient
-//            .collection(collectionName)
-//            .order(by: "name")
-//            .getDocuments()
-//        
-//        let sauces = records.map { record in
-//            let data = record.data()
-//            return Sauce(id: record.documentID,
-//                         name: data?["name"] as? String ?? "",
-//                         currentQuantity: data?["currentQuantity"] as? Double ?? 0.00,
-//                         unit: data?["unit"] as? String ?? "mL",
-//                         batchDate: data?["batchDate"] as? Date ?? Date.now)
-//        }
-//        
-//        return sauces
-//    }
-    
     public func fetchAll() async throws -> [Sauce] {
         let records = try await firebaseClient
             .collection(collectionName)
@@ -73,7 +55,7 @@ public actor FirebaseSauceRepository: SauceRepositoryProtocol {
             .updateData([
                 "name": sauce.name,
                 "currentQuantity": sauce.currentQuantity,
-                "unit": sauce.unit,
+                "unit": sauce.unit.rawValue,
                 "batchDate": sauce.batchDate,
             ])
         

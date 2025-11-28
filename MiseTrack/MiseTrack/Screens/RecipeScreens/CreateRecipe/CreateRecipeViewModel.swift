@@ -38,7 +38,7 @@ class CreateRecipeViewModel: ObservableObject {
                                                  displayName: name,
                                                  ingredients: validIngredients,
                                                  instructions: validInstructions,
-                                                 unit: "ml",
+                                                 unit: .milliliter,
                                                  volumeML: volumeMl)
         shouldDismissView = true
     }

@@ -26,7 +26,7 @@ public class SauceService: SauceServicesProtocol {
     
     public func createSauce(name: String,
                             currentQuantity: Double,
-                            unit: String,
+                            unit: Units,
                             batchDate: Date) async throws -> Sauce {
         
         guard !name.isEmpty else {

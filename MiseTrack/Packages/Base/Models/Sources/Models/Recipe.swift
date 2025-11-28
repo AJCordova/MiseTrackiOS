@@ -11,7 +11,7 @@ public struct Recipe: Identifiable, Codable, Sendable {
     public let displayName: String
     public let ingredients: [Ingredient]
     public let instructions: [String]
-    public let unit: String
+    public let unit: Units
     public let volumeMl: Double
     
     public init(id: String,
@@ -19,7 +19,7 @@ public struct Recipe: Identifiable, Codable, Sendable {
                 displayName: String,
                 ingredients: [Ingredient],
                 instructions: [String],
-                unit: String,
+                unit: Units,
                 volumeMl: Double) {
         self.id = id
         self.name = name

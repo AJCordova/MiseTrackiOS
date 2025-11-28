@@ -28,7 +28,7 @@ public final class RecipeService: RecipeServiceProtocol {
                              displayName: String,
                              ingredients: [Models.Ingredient],
                              instructions: [String],
-                             unit: String,
+                             unit: Units,
                              volumeML: Double) async throws -> Recipe {
         
         guard !name.isEmpty else {

@@ -37,18 +37,6 @@ struct RecipeListView: View {
                                 Text("\(recipe.displayName)")
                                     .font(.headline)
                             }
-                            
-                            NavigationLink(destination: RecipeDetailsView(recipe: recipe,
-                                                                          recipeService: recipeService)) {
-                                Text("\(recipe.displayName)")
-                                    .font(.headline)
-                            }
-                            
-                            NavigationLink(destination: RecipeDetailsView(recipe: recipe,
-                                                                          recipeService: recipeService)) {
-                                Text("\(recipe.displayName)")
-                                    .font(.headline)
-                            }
                         }
                     }
                     .listRowSpacing(4.0)

@@ -16,7 +16,7 @@ public protocol RecipeServiceProtocol: Sendable {
                       displayName: String,
                       ingredients: [Ingredient],
                       instructions: [String],
-                      unit: String,
+                      unit: Units,
                       volumeML: Double) async throws -> Recipe
     func updateRecipe(id: String, recipe: Recipe) async throws -> Recipe
     func deleteRecipe(id: String) async throws

@@ -28,19 +28,18 @@ class SauceListViewModel: ObservableObject {
         Task {
             do {
                 // TODO: Remove task execution delay for sync workaround.
-                try await Task.sleep(for: .seconds(2))
-                let fetched = try await service.getAllSauces()
-                let sorted = fetched.sorted { $0.batchDate > $1.batchDate }
+                let sauces = try await service.getAllSauces()
+                let sorted = sauces.sorted { $0.batchDate > $1.batchDate }
                 
-                await MainActor.run {
-                    self.sauces = sorted
-                    self.isLoading = false
-                    self.errorMessage = nil
+                await MainActor.run { [weak self] in
+                    self?.sauces = sorted
+                    self?.isLoading = false
+                    self?.errorMessage = nil
                 }
             } catch {
-                await MainActor.run {
-                    self.errorMessage = error.localizedDescription
-                    self.isLoading = false
+                await MainActor.run { [weak self] in
+                    self?.errorMessage = error.localizedDescription
+                    self?.isLoading = false
                 }
             }
         }

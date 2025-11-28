@@ -51,15 +51,15 @@ class CreateSauceViewModel: ObservableObject {
                 // store recipes in recipe services??
                 let fetched = try await service.getAllRecipes()
                 
-                await MainActor.run {
-                    self.recipes = fetched
-                    self.isLoading = false
-                    self.errorMessage = nil
+                await MainActor.run { [weak self] in
+                    self?.recipes = fetched
+                    self?.isLoading = false
+                    self?.errorMessage = nil
                 }
             } catch {
-                await MainActor.run {
-                    self.isLoading = false
-                    self.errorMessage = error.localizedDescription
+                await MainActor.run { [weak self] in
+                    self?.isLoading = false
+                    self?.errorMessage = error.localizedDescription
                 }
             }
         }
@@ -77,13 +77,13 @@ class CreateSauceViewModel: ObservableObject {
                                                   unit: "ml",
                                                   batchDate: Date())
                 
-                await MainActor.run {
-                    isLoading = false
+                await MainActor.run { [weak self] in
+                    self?.isLoading = false
                 }
             } catch {
-                await MainActor.run {
-                    self.isLoading = false
-                    self.errorMessage = error.localizedDescription
+                await MainActor.run { [weak self] in
+                    self?.isLoading = false
+                    self?.errorMessage = error.localizedDescription
                 }
             }
         }

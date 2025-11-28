@@ -37,7 +37,11 @@ struct SauceDetailsView: View {
             Section("Quantity") {
                 Text("Current Quantity: \(String(format: "%.2f", sauce.currentQuantity)) \(sauce.unit.rawValue)")
 
-                ProgressView(value: sauce.currentQuantity / maxAmount)
+                // TODO: REVIEW
+                // Clamp progress between 0 and 1 and provide a total for clarity
+                let safeMax = max(maxAmount, 0.0001)
+                let clampedProgress = min(max(sauce.currentQuantity, 0), safeMax)
+                ProgressView(value: clampedProgress, total: safeMax)
             }
             
             Section("Consume") {
@@ -73,3 +77,4 @@ struct SauceDetailsView: View {
 //                             batchDate: Date())
 //    SauceDetailsView(sauce: sauce)
 }
+

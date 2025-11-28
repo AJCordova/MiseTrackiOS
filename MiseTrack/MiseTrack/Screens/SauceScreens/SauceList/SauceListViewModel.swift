@@ -27,10 +27,11 @@ class SauceListViewModel: ObservableObject {
 
         Task {
             do {
-                // TODO: Remove task execution delay for sync workaround.
+                // TODO: Review concurrency questions
                 let sauces = try await service.getAllSauces()
                 let sorted = sauces.sorted { $0.batchDate > $1.batchDate }
                 
+                // TODO: Use weak self? // self is already main actor though
                 await MainActor.run { [weak self] in
                     self?.sauces = sorted
                     self?.isLoading = false

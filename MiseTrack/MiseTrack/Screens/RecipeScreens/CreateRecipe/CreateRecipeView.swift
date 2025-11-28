@@ -31,7 +31,9 @@ struct CreateRecipeView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 16) {
+                VStack(spacing: 12) {
+                    
+                    // MARK: Name field
                     VStack(alignment: .leading, spacing: 8.0) {
                         Text("Recipe name")
                             .font(.headline)
@@ -41,6 +43,93 @@ struct CreateRecipeView: View {
                     .padding()
                     .background(Color(.background))
                     
+                    // MARK: Ingredients
+                    VStack(alignment: .leading, spacing: 12.0) {
+                        Text("Ingredients")
+                            .font(.headline)
+                        
+                        ForEach($viewModel.ingredients) { $ingredient in
+                            HStack(spacing: 4.0) {
+                                TextField("Name", text: $ingredient.name)
+                                    .textFieldStyle(.roundedBorder)
+                                TextField("\(String(format: "%.2f", 0.00))", value: $ingredient.quantity, format: .number)
+                                    .keyboardType(.decimalPad)
+                                    .textFieldStyle(.roundedBorder)
+                                    .frame(width: 60)
+                                Picker("Unit", selection: $ingredient.unit) {
+                                    ForEach(Units.allCases, id: \.self) { unit in
+                                        Text(unit.rawValue).tag(unit)
+                                    }
+                                }
+                                .frame(width: 70)
+                                
+                                if viewModel.ingredients.count > 1 {
+                                    Button(action: {
+                                        viewModel.ingredients.removeAll { $0.id == ingredient.id }
+                                    }) {
+                                        Image(systemName: "minus.circle.fill")
+                                            .foregroundStyle(.red)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        Button(action: {
+                            viewModel.ingredients.append(Ingredient(name: "", quantity: 0.00))
+                        }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "plus.circle.fill")
+                                Text("Add Ingredient")
+                            }
+                        }
+                        .foregroundStyle(Color(.accent))
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    
+                    // MARK: Instructions
+                    VStack(alignment: .leading, spacing: 12.0) {
+                        Text("Instructions")
+                            .font(.headline)
+                        
+                        ForEach(Array(viewModel.instructions.enumerated()), id: \.offset) { index, instruction in
+                            HStack(spacing: 8.0) {
+                                TextField("Instruction", text: $viewModel.instructions[index])
+                                    .textFieldStyle(.roundedBorder)
+
+                                if viewModel.instructions.count > 1 {
+                                    Button(action: {
+                                        viewModel.instructions.remove(at: index)
+                                    }) {
+                                        Image(systemName: "minus.circle.fill")
+                                            .foregroundStyle(.red)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        Button(action: {
+                            viewModel.instructions.append("")
+                        }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "plus.circle.fill")
+                                Text("Add Ingredient")
+                            }
+                        }
+                        .foregroundStyle(Color(.accent))
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    
+                    // MARK: Approximate amount made
+                    VStack(alignment: .leading, spacing: 12.0) {
+                        Text("Approximate quantity created (ml)")
+                            .font(.headline)
+                        TextField("\(String(format: "%.2f", 0.00))", value: $viewModel.quantity, format: .number)
+                            .keyboardType(.decimalPad)
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
                 }
             }
             .navigationTitle("Create Recipe")

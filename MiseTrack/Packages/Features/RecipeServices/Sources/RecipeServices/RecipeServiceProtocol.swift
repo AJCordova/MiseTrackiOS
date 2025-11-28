@@ -9,7 +9,7 @@ import Foundation
 import Models
 import DataService
 
-public protocol RecipeServiceProtocol {
+public protocol RecipeServiceProtocol: Sendable {
     func getAllRecipes() async throws -> [Recipe]
     func getRecipe(id: String) async throws -> Recipe
     func createRecipe(name: String,
@@ -18,6 +18,6 @@ public protocol RecipeServiceProtocol {
                       instructions: [String],
                       unit: String,
                       volumeML: Double) async throws -> Recipe
-    func updateRecipe(id: UUID, recipe: Recipe) async throws -> Recipe
-    func deleteSauce(id: UUID) async throws
+    func updateRecipe(id: String, recipe: Recipe) async throws -> Recipe
+    func deleteRecipe(id: String) async throws
 }

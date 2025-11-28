@@ -12,7 +12,6 @@ import RecipeServices
 
 struct SauceDetailsView: View {
     @StateObject private var viewModel: SauceDetailsViewModel
-    @State private var consumeAmount: Double = 0.00
     @Environment(\.dismiss) private var dismiss
     
     private let maxAmount = 2000.00

@@ -13,6 +13,7 @@ import RecipeServices
 @MainActor
 class SauceDetailsViewModel: ObservableObject {
     @Published var amount: Double = 0.00
+    // TODO: sauce instance must only come from viewmodel.sauce
     private let sauceService: SauceServicesProtocol
     private let sauce: Sauce
     

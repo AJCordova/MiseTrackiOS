@@ -66,10 +66,10 @@ struct SauceDetailsView: View {
 }
 
 #Preview {
-    let sauce: Sauce = Sauce(id: "avkoCt61EGVLvjC1t0Ph",
-                             name: "Teriyaki Sauce",
-                             currentQuantity: 500.00,
-                             unit: "mL",
-                             batchDate: Date())
+//    let sauce: Sauce = Sauce(id: "avkoCt61EGVLvjC1t0Ph",
+//                             name: "Teriyaki Sauce",
+//                             currentQuantity: 500.00,
+//                             unit: "mL",
+//                             batchDate: Date())
 //    SauceDetailsView(sauce: sauce)
 }

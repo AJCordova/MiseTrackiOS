@@ -11,7 +11,7 @@ import RecipeServices
 
 struct RecipeListView: View {
     @StateObject private var viewModel: RecipeListViewModel
-    @State var recipesList = []
+    @State private var showCreateRecipeView = false
     
     private let recipeService: RecipeServiceProtocol
     
@@ -56,7 +56,7 @@ struct RecipeListView: View {
             }
             .navigationTitle("Recipes")
             .toolbar {
-                Button(action: { }) {
+                Button(action: { showCreateRecipeView = true }) {
                     // Add
                     Image(systemName: "plus")
                         .symbolRenderingMode(.monochrome)
@@ -65,6 +65,12 @@ struct RecipeListView: View {
                 
                 Button(action: { viewModel.loadRecipes() }) {
                     Image(systemName: "arrow.clockwise")
+                }
+            }
+            .sheet(isPresented: $showCreateRecipeView) {
+                CreateRecipeView(isPresented: $showCreateRecipeView,
+                                 recipeService: recipeService) {
+                    viewModel.loadRecipes()
                 }
             }
             .onAppear() {

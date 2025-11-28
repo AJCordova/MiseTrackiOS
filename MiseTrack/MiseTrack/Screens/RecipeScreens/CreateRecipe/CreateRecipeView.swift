@@ -41,7 +41,7 @@ struct CreateRecipeView: View {
                             .textFieldStyle(.roundedBorder)
                     }
                     .padding()
-                    .background(Color(.background))
+                    .background(Color(.systemGray6))
                     
                     // MARK: Ingredients
                     VStack(alignment: .leading, spacing: 12.0) {
@@ -133,6 +133,7 @@ struct CreateRecipeView: View {
                     .background(Color(.systemGray6))
                 }
             }
+            .background(Color.background)
             .navigationTitle("Create Recipe")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -140,6 +141,7 @@ struct CreateRecipeView: View {
                     Button("Cancel") {
                         isPresented = false
                     }
+                    .foregroundStyle(.red)
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
@@ -155,6 +157,7 @@ struct CreateRecipeView: View {
                             isCreating = false
                         }
                     }
+                    .foregroundStyle(.green)
                     .disabled(viewModel.name.isEmpty || isCreating)
                 }
             }

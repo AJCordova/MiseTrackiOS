@@ -63,4 +63,11 @@ public actor FirebaseRecipeRepository: RecipeRepositoryProtocol {
             .document(id)
             .delete()
     }
+//    
+//    public func searchExistingName(id: String, name: String) async throws {
+//        let results = try await firebaseClient
+//            .collection(collectionName)
+//            .whereField("name", isEqualTo: name)
+//        print()
+//    }
 }

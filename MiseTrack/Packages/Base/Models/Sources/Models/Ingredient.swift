@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Ingredient: Identifiable, Codable, Sendable {
+public struct Ingredient: Identifiable, Codable, Sendable, Equatable {
     public let id: String
     public var name: String
     public var quantity: Double

@@ -36,14 +36,14 @@ struct RecipeDetailsView: View {
                         
                         if viewModel.isEditing {
                             TextField("Recipe name", text: $viewModel.recipe.displayName)
-                                
+                                .textFieldStyle(.roundedBorder)
                         } else {
                             Text(viewModel.recipe.displayName)
                                 .font(.title2)
                                 .fontWeight(.semibold)
                         }
                     }
-                    
+
                     Divider()
                     
                     // MARK: Total yield
@@ -69,7 +69,7 @@ struct RecipeDetailsView: View {
                     Divider()
                     
                     // MARK: Ingredients
-                    VStack(alignment: .leading, spacing: 4) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("Ingredients")
                             .font(.headline)
                             .foregroundStyle(.secondary)
@@ -129,50 +129,117 @@ struct RecipeDetailsView: View {
                     Divider()
                     
                     // MARK: Instructions
-                    VStack(alignment: .leading, spacing: 4) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("Instructions")
                             .font(.headline)
                             .foregroundStyle(.secondary)
                         
-                        ForEach(Array(viewModel.recipe.instructions.enumerated()), id: \.offset) { index, instruction in
-                            if index > 0 {
-                                Divider()
+                        if viewModel.isEditing {
+                            ForEach(Array(viewModel.recipe.instructions.enumerated()), id: \.offset) { index, instruction in
+                                HStack(spacing: 8) {
+                                    TextField(instruction, text: $viewModel.recipe.instructions[index], axis: .vertical)
+                                        .textFieldStyle(.roundedBorder)
+                                    
+                                    if viewModel.recipe.instructions.count > 1 {
+                                        Button(action: {
+                                            viewModel.recipe.instructions.remove(at: index)
+                                        }) {
+                                            Image(systemName: "minus.circle.fill")
+                                                .foregroundStyle(.red)
+                                        }
+                                    }
+                                }
                             }
-                            Text("\(index + 1). \(instruction)")
-                                .font(.subheadline)
+                            
+                            Button(action: {
+                                viewModel.recipe.instructions.append("")
+                            }) {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "plus.circle.fill")
+                                    Text("Add Ingredient")
+                                }
+                            }
+                            .foregroundStyle(Color(.accent))
+                            
+                        } else {
+                            ForEach(Array(viewModel.recipe.instructions.enumerated()), id: \.offset) { index, instruction in
+                                Text("\(index + 1). \(instruction)")
+                                    .font(.subheadline)
+                            }
                         }
                     }
-                    
-                    Spacer()
                 }
-                .padding()
-                
             }
-            .navigationTitle(viewModel.recipe.displayName)
+            .padding()
+            .background(viewModel.isEditing ? Color(.systemGray6) : Color.background)
+            .navigationTitle("Recipe Details")
             .navigationBarTitleDisplayMode(.inline)
-//            .toolbar {
-//                ToolbarItem(placement: .cancellationAction) {
-//                    Button("Cancel") {
-//                        viewModel.isEditing = false
-//                    }
-//                    .foregroundStyle(.red)
-//                }
-//                
-//                Button(action: { viewModel.isEditing = true }) {
-//                    // Edit
-//                    Image(systemName: "square.and.pencil")
-//                        .symbolRenderingMode(.monochrome)
-//                        .foregroundStyle(.accent)
-//                }
-//                
-//                Button(action: {  }) {
-//                    // Delete
-//                    Image(systemName: "trash")
-//                        .symbolRenderingMode(.monochrome)
-//                        .foregroundStyle(.red)
-//                }
-//            }
-            
+            .toolbar {
+                if !viewModel.isEditing {
+                    Button(action: {
+                        viewModel.isEditing = true
+                    }) {
+                        // Edit
+                        Image(systemName: "square.and.pencil")
+                            .symbolRenderingMode(.monochrome)
+                            .foregroundStyle(.accent)
+                    }
+                    
+                    Button(action: {
+                        showDeleteConfirmation = true
+                    }) {
+                        Image(systemName: "trash")
+                            .symbolRenderingMode(.monochrome)
+                            .foregroundStyle(.red)
+                    }
+                } else {
+                    if viewModel.isFormValid {
+                        Button(action: {
+                            viewModel.isEditing = false
+                            Task {
+                                do {
+                                    try await viewModel.saveRecipe()
+                                    dismiss()
+                                } catch {
+                                    
+                                }
+                            }
+                        }) {
+                            // SAVE
+                            Text("Save")
+                        }
+                        .foregroundStyle(.green)
+                    }
+                    
+                    Button(action: {
+                        viewModel.isEditing = false
+                    }) {
+                        // Edit
+                        Text("Cancel")
+                    }
+                    .foregroundStyle(.red)
+                }
+            }
+        }
+        .background(Color.background)
+        .alert("", isPresented: $showDeleteConfirmation) {
+            Button("DELETE") {
+                Task {
+                    do {
+                        try await viewModel.deleteRecipe()
+                        dismiss()
+                    } catch {
+                        
+                    }
+                }
+            }
+        } message: {
+            Text("Are you sure you want to delete this recipe? This cannot be undone.")
+        }
+        .alert("Error", isPresented: $showError) {
+            Button("OK") { showError = false }
+        } message: {
+            Text(viewModel.errorMessage ?? "Unknown error")
         }
     }
 }

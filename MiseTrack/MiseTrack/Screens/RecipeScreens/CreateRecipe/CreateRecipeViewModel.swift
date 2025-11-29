@@ -24,7 +24,7 @@ class CreateRecipeViewModel: ObservableObject {
         self.recipeService = recipeService
     }
     
-    func createRecipe() async throws {
+    func createRecipe() async throws -> Recipe {
         guard !name.isEmpty, !ingredients.isEmpty, !instructions.isEmpty, !quantity.isZero  else {
             throw RecipeServiceError.invalidInput("Some fields are empty.")
         }
@@ -35,13 +35,14 @@ class CreateRecipeViewModel: ObservableObject {
         }
         
         let validInstructions = instructions.filter { !$0.isEmpty }
-        _ = try await recipeService.createRecipe(name: createNormalizedString(from: name),
+        let recipe = try await recipeService.createRecipe(name: createNormalizedString(from: name),
                                                  displayName: name,
                                                  ingredients: validIngredients,
                                                  instructions: validInstructions,
                                                  unit: .milliliter,
                                                  volumeML: quantity)
         shouldDismissView = true
+        return recipe
     }
     
     private func createNormalizedString(from value: String) -> String {

@@ -148,7 +148,7 @@ struct CreateRecipeView: View {
                     Button("Create") {
                         Task {
                             do {
-                                try await viewModel.createRecipe()
+                                _ = try await viewModel.createRecipe()
                                 isPresented = false
                                 onRecipeCreated()
                             } catch {

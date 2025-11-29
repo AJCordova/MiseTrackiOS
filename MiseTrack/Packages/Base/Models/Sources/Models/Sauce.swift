@@ -25,5 +25,3 @@ public struct Sauce: Identifiable, Codable, Sendable {
         self.batchDate = batchDate
     }
 }
-
-// TODO: computed properties for quantity level, status

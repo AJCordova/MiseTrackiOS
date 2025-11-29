@@ -94,7 +94,7 @@ struct CreateRecipeView: View {
                         
                         ForEach(Array(viewModel.instructions.enumerated()), id: \.offset) { index, instruction in
                             HStack(spacing: 8.0) {
-                                TextField("Instruction", text: $viewModel.instructions[index])
+                                TextField("Instruction", text: $viewModel.instructions[index], axis: .vertical)
                                     .textFieldStyle(.roundedBorder)
 
                                 if viewModel.instructions.count > 1 {

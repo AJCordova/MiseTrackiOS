@@ -14,14 +14,11 @@ struct SauceDetailsView: View {
     @StateObject private var viewModel: SauceDetailsViewModel
     @Environment(\.dismiss) private var dismiss
     
-    private let maxAmount = 2000.00
-    let sauce: Sauce
-    
+    private let maxAmount = 2000.00 // TODO: value should come from viewmodel -> config
     private let sauceService: SauceServicesProtocol
     
     public init(sauce: Sauce,
                 sauceService: SauceServicesProtocol) {
-        self.sauce = sauce
         self.sauceService = sauceService
         _viewModel = StateObject(wrappedValue: SauceDetailsViewModel(sauceService: sauceService,
                                                                      sauce: sauce))
@@ -30,17 +27,17 @@ struct SauceDetailsView: View {
     var body: some View {
         Form {
             Section("Information") {
-                Text("Name: \(sauce.name)")
-                Text("Batch Date: \(sauce.batchDate.formatted(date: .abbreviated, time: .omitted))")
+                Text("Name: \(viewModel.sauce.name)")
+                Text("Batch Date: \(viewModel.sauce.batchDate.formatted(date: .abbreviated, time: .omitted))")
             }
             
             Section("Quantity") {
-                Text("Current Quantity: \(String(format: "%.2f", sauce.currentQuantity)) \(sauce.unit.rawValue)")
+                Text("Current Quantity: \(String(format: "%.2f", viewModel.sauce.currentQuantity)) \(viewModel.sauce.unit.rawValue)")
 
                 // TODO: REVIEW
                 // Clamp progress between 0 and 1 and provide a total for clarity
                 let safeMax = max(maxAmount, 0.0001)
-                let clampedProgress = min(max(sauce.currentQuantity, 0), safeMax)
+                let clampedProgress = min(max(viewModel.sauce.currentQuantity, 0), safeMax)
                 ProgressView(value: clampedProgress, total: safeMax)
             }
             
@@ -55,7 +52,7 @@ struct SauceDetailsView: View {
                 }
             }
         }
-        .navigationTitle(sauce.name)
+        .navigationTitle(viewModel.sauce.name)
         .toolbar {
             Button(action: {
                 viewModel.delete()

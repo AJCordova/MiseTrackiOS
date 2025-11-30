@@ -15,31 +15,23 @@ class RecipeListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     
-    private let recipeService: RecipeServiceProtocol
+    private let service: RecipeServiceProtocol
     
-    init(recipeService: RecipeServiceProtocol) {
-        self.recipeService = recipeService
+    public init(recipeService: RecipeServiceProtocol) {
+        self.service = recipeService
     }
     
-    func loadRecipes() {
-        isLoading = true
-        let service = recipeService
+    func loadRecipes() async {
+        self.isLoading = true
         
-        Task {
-            do {
-                let recipes = try await service.getAllRecipes()
-                
-                await MainActor.run { [weak self] in
-                    self?.recipes = recipes
-                    self?.isLoading = false
-                    self?.errorMessage = nil
-                }
-            } catch {
-                await MainActor.run { [weak self] in
-                    self?.errorMessage = error.localizedDescription
-                    self?.isLoading = false
-                }
-            }
+        do {
+            let retrievedRecipes = try await self.service.getAllRecipes()
+            self.recipes = retrievedRecipes
+            self.isLoading = false
+            self.errorMessage = nil
+        } catch {
+            self.errorMessage = error.localizedDescription
+            self.isLoading = false
         }
     }
 }

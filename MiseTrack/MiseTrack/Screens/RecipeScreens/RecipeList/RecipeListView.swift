@@ -45,24 +45,29 @@ struct RecipeListView: View {
             .navigationTitle("Recipes")
             .toolbar {
                 Button(action: { showCreateRecipeView = true }) {
-                    // Add
                     Image(systemName: "plus")
                         .symbolRenderingMode(.monochrome)
                         .foregroundStyle(.accent)
                 }
                 
-                Button(action: { viewModel.loadRecipes() }) {
+                Button(action: {
+                    Task {
+                        await viewModel.loadRecipes()
+                    }
+                }) {
                     Image(systemName: "arrow.clockwise")
                 }
             }
             .sheet(isPresented: $showCreateRecipeView) {
                 CreateRecipeView(isPresented: $showCreateRecipeView,
                                  recipeService: recipeService) {
-                    viewModel.loadRecipes()
+                    Task {
+                        await viewModel.loadRecipes()
+                    }
                 }
             }
-            .onAppear() {
-                viewModel.loadRecipes()
+            .task {
+                await viewModel.loadRecipes()
             }
         }
     }

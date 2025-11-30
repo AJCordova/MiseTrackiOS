@@ -15,33 +15,25 @@ class SauceListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     
-    private let sauceService: SauceServicesProtocol
+    private let service: SauceServicesProtocol
     
-    init(sauceService: SauceServicesProtocol) {
-        self.sauceService = sauceService
+    public init(sauceService: SauceServicesProtocol) {
+        self.service = sauceService
     }
     
     func loadSauces() {
-        isLoading = true
-        let service = sauceService
+        self.isLoading = true
 
         Task {
             do {
-                // TODO: Review concurrency questions
-                let sauces = try await service.getAllSauces()
-                let sorted = sauces.sorted { $0.batchDate > $1.batchDate }
-                
-                // TODO: Use weak self? // self is already main actor though
-                await MainActor.run { [weak self] in
-                    self?.sauces = sorted
-                    self?.isLoading = false
-                    self?.errorMessage = nil
-                }
+                let retrievedSauces = try await self.service.getAllSauces()
+                let sorted = retrievedSauces.sorted { $0.batchDate < $1.batchDate }
+                self.sauces = retrievedSauces
+                self.isLoading = false
+                self.errorMessage = nil
             } catch {
-                await MainActor.run { [weak self] in
-                    self?.errorMessage = error.localizedDescription
-                    self?.isLoading = false
-                }
+                self.errorMessage = error.localizedDescription
+                self.isLoading = false
             }
         }
     }

@@ -26,145 +26,149 @@ struct RecipeDetailsView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
-                    
-                    // MARK: recipe name
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Recipe Name")
-                            .font(.headline)
-                            .foregroundStyle(.secondary)
+                if viewModel.isLoading {
+                    ProgressView()
+                } else {
+                    VStack(alignment: .leading, spacing: 12) {
                         
-                        if viewModel.isEditing {
-                            TextField("Recipe name", text: $viewModel.recipe.displayName)
-                                .textFieldStyle(.roundedBorder)
-                        } else {
-                            Text(viewModel.recipe.displayName)
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                        }
-                    }
-
-                    Divider()
-                    
-                    // MARK: Total yield
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Total Amount")
-                            .font(.headline)
-                            .foregroundStyle(.secondary)
-                        
-                        if viewModel.isEditing {
-                            HStack {
-                                TextField("Quantity", value: $viewModel.recipe.volumeMl, format: .number)
-                                    .keyboardType(.decimalPad)
+                        // MARK: recipe name
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Recipe Name")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            
+                            if viewModel.isEditing {
+                                TextField("Recipe name", text: $viewModel.recipe.displayName)
                                     .textFieldStyle(.roundedBorder)
-                                Text(viewModel.recipe.unit.rawValue)
-                                    .foregroundStyle(.secondary)
+                            } else {
+                                Text(viewModel.recipe.displayName)
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
                             }
-                        } else {
-                            Text("\(String(format: "%.0f", viewModel.recipe.volumeMl)) \(viewModel.recipe.unit.rawValue)")
-                                .font(.body)
                         }
-                    }
-                    
-                    Divider()
-                    
-                    // MARK: Ingredients
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Ingredients")
-                            .font(.headline)
-                            .foregroundStyle(.secondary)
+
+                        Divider()
                         
-                        if viewModel.isEditing {
-                            ForEach($viewModel.recipe.ingredients) { $ingredient in
-                                HStack(spacing: 4) {
-                                    TextField("Name", text: $ingredient.name)
-                                        .textFieldStyle(.roundedBorder)
-                                    
-                                    TextField("0.00", value: $ingredient.quantity, format: .number)
+                        // MARK: Total yield
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Total Amount")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            
+                            if viewModel.isEditing {
+                                HStack {
+                                    TextField("Quantity", value: $viewModel.recipe.volumeMl, format: .number)
                                         .keyboardType(.decimalPad)
                                         .textFieldStyle(.roundedBorder)
-                                        .frame(width: 60)
-                                    
-                                    Picker("Unit", selection: $ingredient.unit) {
-                                        ForEach(Units.allCases, id: \.self) { unit in
-                                            Text(unit.rawValue).tag(unit)
-                                        }
-                                    }
-                                    .frame(width: 70)
-                                    
-                                    if viewModel.recipe.ingredients.count > 1 {
-                                        Button(action: {
-                                            viewModel.recipe.ingredients.removeAll { $0.id == ingredient.id }
-                                        }) {
-                                            Image(systemName: "minus.circle.fill")
-                                                .foregroundStyle(.red)
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            Button(action: {
-                                viewModel.recipe.ingredients.append(Ingredient(name: "", quantity: 0.00))
-                            }) {
-                                HStack(spacing: 4) {
-                                    Image(systemName: "plus.circle.fill")
-                                    Text("Add Ingredient")
-                                }
-                            }
-                            .foregroundStyle(Color(.accent))
-                        }
-                        else {
-                            ForEach(viewModel.recipe.ingredients) { ingredient in
-                                HStack {
-                                    Text(ingredient.name)
-                                    Spacer()
-                                    Text("\(String(format: "%.2f", ingredient.quantity)) \(ingredient.unit.rawValue)")
+                                    Text(viewModel.recipe.unit.rawValue)
                                         .foregroundStyle(.secondary)
                                 }
-                                .padding(.vertical, 2)
+                            } else {
+                                Text("\(String(format: "%.0f", viewModel.recipe.volumeMl)) \(viewModel.recipe.unit.rawValue)")
+                                    .font(.body)
                             }
                         }
-                    }
-                    
-                    Divider()
-                    
-                    // MARK: Instructions
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Instructions")
-                            .font(.headline)
-                            .foregroundStyle(.secondary)
                         
-                        if viewModel.isEditing {
-                            ForEach(Array(viewModel.recipe.instructions.enumerated()), id: \.offset) { index, instruction in
-                                HStack(spacing: 8) {
-                                    TextField(instruction, text: $viewModel.recipe.instructions[index], axis: .vertical)
-                                        .textFieldStyle(.roundedBorder)
-                                    
-                                    if viewModel.recipe.instructions.count > 1 {
-                                        Button(action: {
-                                            viewModel.recipe.instructions.remove(at: index)
-                                        }) {
-                                            Image(systemName: "minus.circle.fill")
-                                                .foregroundStyle(.red)
+                        Divider()
+                        
+                        // MARK: Ingredients
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Ingredients")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            
+                            if viewModel.isEditing {
+                                ForEach($viewModel.recipe.ingredients) { $ingredient in
+                                    HStack(spacing: 4) {
+                                        TextField("Name", text: $ingredient.name)
+                                            .textFieldStyle(.roundedBorder)
+                                        
+                                        TextField("0.00", value: $ingredient.quantity, format: .number)
+                                            .keyboardType(.decimalPad)
+                                            .textFieldStyle(.roundedBorder)
+                                            .frame(width: 60)
+                                        
+                                        Picker("Unit", selection: $ingredient.unit) {
+                                            ForEach(Units.allCases, id: \.self) { unit in
+                                                Text(unit.rawValue).tag(unit)
+                                            }
+                                        }
+                                        .frame(width: 70)
+                                        
+                                        if viewModel.recipe.ingredients.count > 1 {
+                                            Button(action: {
+                                                viewModel.recipe.ingredients.removeAll { $0.id == ingredient.id }
+                                            }) {
+                                                Image(systemName: "minus.circle.fill")
+                                                    .foregroundStyle(.red)
+                                            }
                                         }
                                     }
                                 }
+                                
+                                Button(action: {
+                                    viewModel.recipe.ingredients.append(Ingredient(name: "", quantity: 0.00))
+                                }) {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "plus.circle.fill")
+                                        Text("Add Ingredient")
+                                    }
+                                }
+                                .foregroundStyle(Color(.accent))
                             }
-                            
-                            Button(action: {
-                                viewModel.recipe.instructions.append("")
-                            }) {
-                                HStack(spacing: 4) {
-                                    Image(systemName: "plus.circle.fill")
-                                    Text("Add Ingredient")
+                            else {
+                                ForEach(viewModel.recipe.ingredients) { ingredient in
+                                    HStack {
+                                        Text(ingredient.name)
+                                        Spacer()
+                                        Text("\(String(format: "%.2f", ingredient.quantity)) \(ingredient.unit.rawValue)")
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    .padding(.vertical, 2)
                                 }
                             }
-                            .foregroundStyle(Color(.accent))
+                        }
+                        
+                        Divider()
+                        
+                        // MARK: Instructions
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Instructions")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
                             
-                        } else {
-                            ForEach(Array(viewModel.recipe.instructions.enumerated()), id: \.offset) { index, instruction in
-                                Text("\(index + 1). \(instruction)")
-                                    .font(.subheadline)
+                            if viewModel.isEditing {
+                                ForEach(Array(viewModel.recipe.instructions.enumerated()), id: \.offset) { index, instruction in
+                                    HStack(spacing: 8) {
+                                        TextField(instruction, text: $viewModel.recipe.instructions[index], axis: .vertical)
+                                            .textFieldStyle(.roundedBorder)
+                                        
+                                        if viewModel.recipe.instructions.count > 1 {
+                                            Button(action: {
+                                                viewModel.recipe.instructions.remove(at: index)
+                                            }) {
+                                                Image(systemName: "minus.circle.fill")
+                                                    .foregroundStyle(.red)
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                Button(action: {
+                                    viewModel.recipe.instructions.append("")
+                                }) {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "plus.circle.fill")
+                                        Text("Add Ingredient")
+                                    }
+                                }
+                                .foregroundStyle(Color(.accent))
+                                
+                            } else {
+                                ForEach(Array(viewModel.recipe.instructions.enumerated()), id: \.offset) { index, instruction in
+                                    Text("\(index + 1). \(instruction)")
+                                        .font(.subheadline)
+                                }
                             }
                         }
                     }
@@ -179,7 +183,6 @@ struct RecipeDetailsView: View {
                     Button(action: {
                         viewModel.isEditing = true
                     }) {
-                        // Edit
                         Image(systemName: "square.and.pencil")
                             .symbolRenderingMode(.monochrome)
                             .foregroundStyle(.accent)
@@ -197,15 +200,10 @@ struct RecipeDetailsView: View {
                         Button(action: {
                             viewModel.isEditing = false
                             Task {
-                                do {
-                                    try await viewModel.saveRecipe()
-                                    dismiss()
-                                } catch {
-                                    
-                                }
+                                try await viewModel.saveRecipe()
+                                dismiss()
                             }
                         }) {
-                            // SAVE
                             Text("Save")
                         }
                         .foregroundStyle(.green)
@@ -214,7 +212,6 @@ struct RecipeDetailsView: View {
                     Button(action: {
                         viewModel.isEditing = false
                     }) {
-                        // Edit
                         Text("Cancel")
                     }
                     .foregroundStyle(.red)
@@ -225,12 +222,8 @@ struct RecipeDetailsView: View {
         .alert("", isPresented: $showDeleteConfirmation) {
             Button("DELETE") {
                 Task {
-                    do {
-                        try await viewModel.deleteRecipe()
-                        dismiss()
-                    } catch {
-                        
-                    }
+                    try await viewModel.deleteRecipe()
+                    dismiss()
                 }
             }
             .foregroundStyle(.red)

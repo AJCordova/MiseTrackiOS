@@ -40,65 +40,68 @@ struct CreateSauceView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 16) {
-                    
-                    // MARK: Choose recipe
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Select recipe")
+                if viewModel.isLoading {
+                    ProgressView()
+                } else {
+                    VStack(spacing: 16) {
                         
-                        if viewModel.isLoading {
-                            ProgressView()
-                        } else if viewModel.recipes.isEmpty {
-                            Text("No recipes available")
-                                .foregroundStyle(.second)
-                        } else if viewModel.selectedRecipe == nil {
-                            VStack(spacing: 8) {
-                                ForEach(viewModel.recipes) { recipe in
-                                    RecipePreviewCardView(recipe: recipe,
-                                                          scale: viewModel.scale,
-                                                          isSelected: viewModel.selectedRecipeID == recipe.id,
-                                                          onSelect: { viewModel.selectRecipe(recipe) },
-                                                          onDeselect: { viewModel.clearRecipe() })
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Select recipe")
+                            
+                            if viewModel.isLoading {
+                                ProgressView()
+                            } else if viewModel.recipes.isEmpty {
+                                Text("No recipes available")
+                                    .foregroundStyle(.second)
+                            } else if viewModel.selectedRecipe == nil {
+                                VStack(spacing: 8) {
+                                    ForEach(viewModel.recipes) { recipe in
+                                        RecipePreviewCardView(recipe: recipe,
+                                                              scale: viewModel.scale,
+                                                              isSelected: viewModel.selectedRecipeID == recipe.id,
+                                                              onSelect: { viewModel.selectRecipe(recipe) },
+                                                              onDeselect: { viewModel.clearRecipe() })
+                                    }
+                                }
+                            } else if let recipe = viewModel.selectedRecipe {
+                                RecipePreviewCardView(recipe: recipe,
+                                                      scale: viewModel.scale,
+                                                      isSelected: viewModel.selectedRecipeID == recipe.id,
+                                                      onSelect: { viewModel.selectRecipe(recipe) },
+                                                      onDeselect: { viewModel.clearRecipe() })
+                            }
+                        }
+                        
+                        if viewModel.selectedRecipe != nil {
+                            ScaleSelector(scale: $viewModel.scale)
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Actual Quantity")
+                                    .font(.caption)
+                                
+                                HStack {
+                                    TextField("Quantity", value: $viewModel.actualYield, format: .number)
+                                        .textFieldStyle(.roundedBorder)
+                                        .keyboardType(.decimalPad)
+                                        .focused($focusedField, equals: .quantityField)
+                                    Spacer()
+                                    Text("ml")
                                 }
                             }
-                        } else if let recipe = viewModel.selectedRecipe {
-                            RecipePreviewCardView(recipe: recipe,
-                                                  scale: viewModel.scale,
-                                                  isSelected: viewModel.selectedRecipeID == recipe.id,
-                                                  onSelect: { viewModel.selectRecipe(recipe) },
-                                                  onDeselect: { viewModel.clearRecipe() })
                         }
-                    }
-                    
-                    if viewModel.selectedRecipe != nil {
-                        // MARK: Scale setting
-                        ScaleSelector(scale: $viewModel.scale)
                         
-                        // MARK: Actual quantity input
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Actual Quantity")
-                                .font(.caption)
-                            
-                            HStack {
-                                TextField("Quantity", value: $viewModel.actualYield, format: .number)
-                                    .textFieldStyle(.roundedBorder)
-                                    .keyboardType(.decimalPad)
-                                    .focused($focusedField, equals: .quantityField)
-                                Spacer()
-                                Text("ml")
+                        if viewModel.actualYield > 0.00 {
+                            Button("Create sauce") {
+                                Task {
+                                    await viewModel.createSauceBatch()
+                                    isPresented = false
+                                    onSauceCreated()
+                                }
                             }
                         }
                     }
-                    
-                    if viewModel.actualYield > 0.00 {
-                        Button("Create sauce") {
-                            viewModel.createSauceBatch()
-                            isPresented = false
-                            onSauceCreated()
-                        }
-                    }
+                    .padding()
                 }
-                .padding()
             }
             .navigationTitle("Create Sauce")
             .toolbar {
@@ -116,8 +119,8 @@ struct CreateSauceView: View {
                 }
             }
         }
-        .onAppear {
-            viewModel.loadRecipes()
+        .task {
+            await viewModel.loadRecipes()
         }
     }
 }

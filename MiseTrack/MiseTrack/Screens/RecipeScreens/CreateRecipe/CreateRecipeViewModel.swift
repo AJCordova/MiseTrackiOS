@@ -15,8 +15,8 @@ class CreateRecipeViewModel: ObservableObject {
     @Published var ingredients: [Ingredient] = [Ingredient(name: "", quantity: 0.00, unit: .milliliter)]
     @Published var instructions: [String] = [""]
     @Published var quantity: Double = 0.00
-    
-    @Published var shouldDismissView = false
+    @Published var isLoading = false
+    @Published var errorMessage: String? = nil
     
     private let recipeService: RecipeServiceProtocol
     
@@ -24,25 +24,38 @@ class CreateRecipeViewModel: ObservableObject {
         self.recipeService = recipeService
     }
     
-    func createRecipe() async throws -> Recipe {
-        guard !name.isEmpty, !ingredients.isEmpty, !instructions.isEmpty, !quantity.isZero  else {
-            throw RecipeServiceError.invalidInput("Some fields are empty.")
+    func createRecipe() async {
+        self.isLoading = true
+        
+        guard !self.name.isEmpty, !self.ingredients.isEmpty, !self.instructions.isEmpty, !self.quantity.isZero  else {
+            self.isLoading = false
+            self.errorMessage = "Some fields are empty."
+            return
         }
         
-        let validIngredients = ingredients.filter { !$0.name.isEmpty && !$0.quantity.isZero }
-        guard validIngredients.count == ingredients.count else {
-            throw RecipeServiceError.invalidInput("Some ingredients are missing information.")
+        let validIngredients = self.ingredients.filter { !$0.name.isEmpty && !$0.quantity.isZero }
+        
+        guard validIngredients.count == self.ingredients.count else {
+            self.isLoading = false
+            self.errorMessage = "Some ingredients are missing information."
+            return
         }
         
-        let validInstructions = instructions.filter { !$0.isEmpty }
-        let recipe = try await recipeService.createRecipe(name: createNormalizedString(from: name),
-                                                 displayName: name,
-                                                 ingredients: validIngredients,
-                                                 instructions: validInstructions,
-                                                 unit: .milliliter,
-                                                 volumeML: quantity)
-        shouldDismissView = true
-        return recipe
+        let validInstructions = self.instructions.filter { !$0.isEmpty }
+        do {
+            _ = try await recipeService.createRecipe(name: createNormalizedString(from: name),
+                                                     displayName: self.name,
+                                                     ingredients: validIngredients,
+                                                     instructions: validInstructions,
+                                                     unit: .milliliter,
+                                                     volumeML: quantity)
+            
+            self.isLoading = false
+            self.errorMessage = nil
+        } catch {
+            self.isLoading = false
+            self.errorMessage = nil
+        }
     }
     
     private func createNormalizedString(from value: String) -> String {

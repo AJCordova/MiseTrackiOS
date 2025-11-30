@@ -36,24 +36,41 @@ class RecipeDetailsViewModel: ObservableObject {
         self.originalRecipe = recipe
     }
     
-    func saveRecipe() async throws {
-        isSaving = true
-        errorMessage = nil
+    func saveRecipe() async {
+        self.isSaving = true
+        self.isLoading = true
         
-        if originalRecipe != recipe && isFormValid {
-            recipe.name = recipe.displayName.removingAllWhiteSpaceAndNewLines().lowercased()
-            Task {
-                let _ = try await service.updateRecipe(id: recipe.id,
-                                                       recipe: recipe)
+        
+        if self.originalRecipe != self.recipe && self.isFormValid {
+            self.recipe.name = self.recipe.displayName.removingAllWhiteSpaceAndNewLines().lowercased()
+            
+            do {
+                let _ = try await self.service.updateRecipe(id: self.recipe.id,
+                                                            recipe: self.recipe)
                 self.isEditing = false
                 self.isSaving = false
+                self.errorMessage = nil
+                self.isLoading = false
+                
+            } catch {
+                self.isEditing = false
+                self.isSaving = false
+                self.errorMessage = error.localizedDescription
+                self.isLoading = false
             }
-        } else {
-            errorMessage = "There was an error in saving your recipe."
         }
     }
     
-    func deleteRecipe() async throws {
-        try await service.deleteRecipe(id: recipe.id)
+    func deleteRecipe() async {
+        self.isLoading = true
+        
+        do {
+            try await self.service.deleteRecipe(id: self.recipe.id)
+            self.isLoading = false
+            self.errorMessage = nil
+        } catch {
+            self.isLoading = false
+            self.errorMessage = error.localizedDescription
+        }
     }
 }

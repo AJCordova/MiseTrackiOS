@@ -47,7 +47,6 @@ struct SauceListView: View {
             .navigationTitle("Sauces")
             .toolbar {
                 Button(action: { showCreateSauceView = true }) {
-                    // Add
                     Image(systemName: "plus")
                         .symbolRenderingMode(.monochrome)
                         .foregroundStyle(.accent)
@@ -64,7 +63,7 @@ struct SauceListView: View {
                     viewModel.loadSauces()
                 }
             }
-            .onAppear {
+            .task {
                 viewModel.loadSauces()
             }
         }

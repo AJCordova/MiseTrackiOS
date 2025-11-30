@@ -23,7 +23,7 @@ class CreateSauceViewModel: ObservableObject {
     private let recipeService: RecipeServiceProtocol
     private let sauceService: SauceServicesProtocol
     
-    init(recipeService: RecipeServiceProtocol, sauceService: SauceServicesProtocol) {
+    public init(recipeService: RecipeServiceProtocol, sauceService: SauceServicesProtocol) {
         self.recipeService = recipeService
         self.sauceService = sauceService
     }
@@ -42,50 +42,37 @@ class CreateSauceViewModel: ObservableObject {
         self.scale = 1.0
     }
     
-    func loadRecipes() {
-        isLoading = true
-        let service = recipeService
+    func loadRecipes() async {
+        self.isLoading = true
         
-        Task {
-            do {
-                // store recipes in recipe services??
-                let fetched = try await service.getAllRecipes()
-                
-                await MainActor.run { [weak self] in
-                    self?.recipes = fetched
-                    self?.isLoading = false
-                    self?.errorMessage = nil
-                }
-            } catch {
-                await MainActor.run { [weak self] in
-                    self?.isLoading = false
-                    self?.errorMessage = error.localizedDescription
-                }
-            }
+        do {
+            // store recipes in recipe services??
+            let fetched = try await self.recipeService.getAllRecipes()
+            self.recipes = fetched
+            self.isLoading = false
+            self.errorMessage = nil
+            
+        } catch {
+            self.isLoading = false
+            self.errorMessage = error.localizedDescription
         }
     }
     
-    func createSauceBatch() {
-        guard let recipe = selectedRecipe else { return }
-        isLoading = true
-        let service = sauceService
+    func createSauceBatch() async {
+        guard let recipe = self.selectedRecipe else { return }
+        self.isLoading = true
         
-        Task {
-            do {
-                _ = try await service.createSauce(name: recipe.displayName,
-                                                  currentQuantity: actualYield,
-                                                  unit: .milliliter,
-                                                  batchDate: Date())
-                
-                await MainActor.run { [weak self] in
-                    self?.isLoading = false
-                }
-            } catch {
-                await MainActor.run { [weak self] in
-                    self?.isLoading = false
-                    self?.errorMessage = error.localizedDescription
-                }
-            }
+        do {
+            _ = try await self.sauceService.createSauce(name: recipe.displayName,
+                                                        currentQuantity: self.actualYield,
+                                                        unit: .milliliter,
+                                                        batchDate: Date())
+            
+            self.isLoading = false
+            self.errorMessage = nil
+        } catch {
+            self.isLoading = false
+            self.errorMessage = error.localizedDescription
         }
     }
 }

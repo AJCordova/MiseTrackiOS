@@ -58,8 +58,10 @@ struct SauceDetailsView: View {
                                 .keyboardType(.decimalPad)
                                 .focused($focusedField, equals: .consume)
                             Button("Consume") {
-                                viewModel.consume()
-                                dismiss()
+                                Task {
+                                    try await viewModel.consume()
+                                    dismiss()
+                                }
                             }
                         }
                     }
@@ -88,7 +90,7 @@ struct SauceDetailsView: View {
         .alert("", isPresented: $showDeleteConfirmation) {
             Button("DELETE") {
                 Task {
-                    viewModel.delete()
+                    try await viewModel.delete()
                     dismiss()
                 }
             }

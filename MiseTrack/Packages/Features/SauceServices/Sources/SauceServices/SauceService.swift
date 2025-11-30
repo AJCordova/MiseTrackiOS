@@ -5,7 +5,7 @@ import Foundation
 import Models
 import DataService
 
-public class SauceService: SauceServicesProtocol {
+public final class SauceService: SauceServicesProtocol {
     private let repository: SauceRepositoryProtocol
     
     public init(repository: SauceRepositoryProtocol? = nil) {

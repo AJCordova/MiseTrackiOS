@@ -80,7 +80,7 @@ struct RecipePreviewCardView: View {
                         Text(ingredient.name)
                             .font(.caption)
                         Spacer()
-                        Text("\(String(format: "%.1f", ingredient.quantity * scale)) \(ingredient.unit)")
+                        Text("\(String(format: "%.1f", ingredient.quantity * scale)) \(ingredient.unit.rawValue)")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }

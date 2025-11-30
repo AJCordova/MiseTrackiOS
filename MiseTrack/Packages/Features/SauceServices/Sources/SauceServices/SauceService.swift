@@ -5,7 +5,7 @@ import Foundation
 import Models
 import DataService
 
-public class SauceService: SauceServicesProtocol {
+public final class SauceService: SauceServicesProtocol {
     private let repository: SauceRepositoryProtocol
     
     public init(repository: SauceRepositoryProtocol? = nil) {
@@ -26,7 +26,7 @@ public class SauceService: SauceServicesProtocol {
     
     public func createSauce(name: String,
                             currentQuantity: Double,
-                            unit: String,
+                            unit: Units,
                             batchDate: Date) async throws -> Sauce {
         
         guard !name.isEmpty else {

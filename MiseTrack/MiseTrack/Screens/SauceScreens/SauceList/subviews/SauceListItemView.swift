@@ -26,7 +26,7 @@ struct SauceListItemView: View {
             
             Spacer()
             VStack(alignment: .trailing, spacing: 4) {
-                Text("\(String(format: "%.2f", sauce.currentQuantity)) \(sauce.unit)")
+                Text("\(String(format: "%.2f", sauce.currentQuantity)) \(sauce.unit.rawValue)")
                     .font(.title3)
             }
         }
@@ -40,7 +40,7 @@ struct SauceListItemView: View {
     let sauce: Sauce = Sauce(id: "avkoCt61EGVLvjC1t0Ph",
                              name: "Teriyaki Sauce",
                              currentQuantity: 500.00,
-                             unit: "mL",
+                             unit: .milliliter,
                              batchDate: Date())
     SauceListItemView(sauce: sauce)
 }

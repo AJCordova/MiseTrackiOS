@@ -17,26 +17,6 @@ public actor FirebaseRecipeRepository: RecipeRepositoryProtocol {
         self.firebaseClient = firebaseClient
     }
     
-//    public func fetchAll() async throws -> [Recipe] {
-//        let records = try await firebaseClient
-//            .collection(collectionName)
-//            .order(by: "name")
-//            .getDocuments()
-//        
-//        let recipes = records.map { record in
-//            let data = record.data()
-//            return Recipe(id: record.documentID,
-//                          name: data?["name"] as? String ?? "",
-//                          displayName: data?["displayName"] as? String ?? "",
-//                          ingredients: data?["ingredients"] as? [Ingredient] ?? [],
-//                          instructions: data?["instructions"] as? [String] ?? [],
-//                          unit: data?["unit"] as? String ?? "mL",
-//                          volumeMl: data?["volumeMl"] as? Double ?? 0.00)
-//        }
-//        
-//        return recipes
-//    }
-    
     public func fetchAll() async throws -> [Recipe] {
         let records = try await firebaseClient
             .collection(collectionName)
@@ -83,4 +63,11 @@ public actor FirebaseRecipeRepository: RecipeRepositoryProtocol {
             .document(id)
             .delete()
     }
+//    
+//    public func searchExistingName(id: String, name: String) async throws {
+//        let results = try await firebaseClient
+//            .collection(collectionName)
+//            .whereField("name", isEqualTo: name)
+//        print()
+//    }
 }

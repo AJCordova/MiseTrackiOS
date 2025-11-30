@@ -28,7 +28,7 @@ struct ContentView: View {
                     Label("Sauces", systemImage: "drop.fill")
                 }
             
-            RecipesView()
+            RecipeListView(recipeService: recipeService)
                 .tabItem {
                     Label("Recipes", systemImage: "book.fill")
                 }

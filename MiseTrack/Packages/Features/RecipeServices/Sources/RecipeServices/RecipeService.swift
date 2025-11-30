@@ -5,7 +5,7 @@ import Foundation
 import Models
 import DataService
 
-public class RecipeService: RecipeServiceProtocol {
+public final class RecipeService: RecipeServiceProtocol {
     private let repository: RecipeRepositoryProtocol
     
     public init(repository: RecipeRepositoryProtocol? = nil) {
@@ -28,7 +28,7 @@ public class RecipeService: RecipeServiceProtocol {
                              displayName: String,
                              ingredients: [Models.Ingredient],
                              instructions: [String],
-                             unit: String,
+                             unit: Units,
                              volumeML: Double) async throws -> Recipe {
         
         guard !name.isEmpty else {
@@ -46,14 +46,13 @@ public class RecipeService: RecipeServiceProtocol {
         return try await repository.create(recipe)
     }
     
-    public func updateRecipe(id: UUID, recipe: Recipe) async throws -> Recipe {
-        let current = try await repository.fetch(id: id.uuidString)
-//        let updated = Recipe(id: <#T##String#>, name: <#T##String#>, displayName: <#T##String#>, ingredients: <#T##[Ingredient]#>, instructions: <#T##[String]#>, unit: <#T##String#>, volumeMl: <#T##Double#>)
+    public func updateRecipe(id: String, recipe: Recipe) async throws -> Recipe {
+//        let current = try await repository.fetch(id: id)
         return try await repository.update(recipe)
     }
     
-    public func deleteSauce(id: UUID) async throws {
-        try await repository.delete(id: id.uuidString)
+    public func deleteRecipe(id: String) async throws {
+        try await repository.delete(id: id)
     }
     
     

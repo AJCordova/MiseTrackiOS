@@ -41,20 +41,22 @@
 		A71B52012EB7C76D00AD2F96 /* Exceptions for "MiseTrack" folder in "MiseTrackTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Recipes/RecipesView.swift,
-				Screens/Sauce/SauceList/SauceListView.swift,
-				Screens/Sauce/SauceList/SauceListViewModel.swift,
-				Screens/Sauce/SaucesView.swift,
+				Screens/RecipeScreens/RecipeList/RecipeListView.swift,
+				Screens/RecipeScreens/RecipeList/RecipeListViewModel.swift,
+				Screens/SauceScreens/SauceList/SauceListView.swift,
+				Screens/SauceScreens/SauceList/SauceListViewModel.swift,
+				Screens/SauceScreens/SaucesView.swift,
 			);
 			target = A71B51D32EB7C01400AD2F96 /* MiseTrackTests */;
 		};
 		A71B52022EB7C76D00AD2F96 /* Exceptions for "MiseTrack" folder in "MiseTrackUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Recipes/RecipesView.swift,
-				Screens/Sauce/SauceList/SauceListView.swift,
-				Screens/Sauce/SauceList/SauceListViewModel.swift,
-				Screens/Sauce/SaucesView.swift,
+				Screens/RecipeScreens/RecipeList/RecipeListView.swift,
+				Screens/RecipeScreens/RecipeList/RecipeListViewModel.swift,
+				Screens/SauceScreens/SauceList/SauceListView.swift,
+				Screens/SauceScreens/SauceList/SauceListViewModel.swift,
+				Screens/SauceScreens/SaucesView.swift,
 			);
 			target = A71B51DD2EB7C01400AD2F96 /* MiseTrackUITests */;
 		};

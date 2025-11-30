@@ -160,7 +160,18 @@ struct CreateRecipeView: View {
                     .foregroundStyle(.green)
                     .disabled(viewModel.name.isEmpty || isCreating)
                 }
+                
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        dismissKeyboard()
+                    }
+                }
             }
         }
+    }
+    
+    private func dismissKeyboard() {
+      UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil,   from: nil, for: nil)
     }
 }

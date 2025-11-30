@@ -247,5 +247,17 @@ struct RecipeDetailsView: View {
         } message: {
             Text(viewModel.errorMessage ?? "Unknown error")
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    dismissKeyboard()
+                }
+            }
+        }
+    }
+    
+    private func dismissKeyboard() {
+      UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil,   from: nil, for: nil)
     }
 }

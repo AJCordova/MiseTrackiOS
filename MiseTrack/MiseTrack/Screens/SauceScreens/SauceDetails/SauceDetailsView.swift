@@ -10,12 +10,24 @@ import Models
 import SauceServices
 import RecipeServices
 
+private enum Field: Hashable {
+    case consume
+}
+
 struct SauceDetailsView: View {
-    @StateObject private var viewModel: SauceDetailsViewModel
     @Environment(\.dismiss) private var dismiss
+    
+    @FocusState private var focusedField: Field?
+    
+    @StateObject private var viewModel: SauceDetailsViewModel
+    
+    @State private var showDeleteConfirmation: Bool = false
     
     private let maxAmount = 2000.00 // TODO: value should come from viewmodel -> config
     private let sauceService: SauceServicesProtocol
+    
+    private var safeMaxAmount: Double { max(maxAmount, 0.0001) }
+    private var clampedProgress: Double { min(max(viewModel.sauce.currentQuantity, 0), safeMaxAmount) }
     
     public init(sauce: Sauce,
                 sauceService: SauceServicesProtocol) {
@@ -25,43 +37,69 @@ struct SauceDetailsView: View {
     }
     
     var body: some View {
-        Form {
-            Section("Information") {
-                Text("Name: \(viewModel.sauce.name)")
-                Text("Batch Date: \(viewModel.sauce.batchDate.formatted(date: .abbreviated, time: .omitted))")
-            }
-            
-            Section("Quantity") {
-                Text("Current Quantity: \(String(format: "%.2f", viewModel.sauce.currentQuantity)) \(viewModel.sauce.unit.rawValue)")
-
-                // TODO: REVIEW
-                // Clamp progress between 0 and 1 and provide a total for clarity
-                let safeMax = max(maxAmount, 0.0001)
-                let clampedProgress = min(max(viewModel.sauce.currentQuantity, 0), safeMax)
-                ProgressView(value: clampedProgress, total: safeMax)
-            }
-            
-            Section("Consume") {
-                HStack {
-                    TextField("Amount (ml)", value: $viewModel.amount, format: .number)
-                        .keyboardType(.decimalPad)
-                    Button("Consume") {
-                        viewModel.consume()
-                        dismiss()
+        VStack {
+            if viewModel.isLoading {
+                ProgressView()
+            } else {
+                Form {
+                    Section("Information") {
+                        Text("Name: \(viewModel.sauce.name)")
+                        Text("Batch Date: \(viewModel.sauce.batchDate.formatted(date: .abbreviated, time: .omitted))")
+                    }
+                    
+                    Section("Quantity") {
+                        Text("Current Quantity: \(String(format: "%.2f", viewModel.sauce.currentQuantity)) \(viewModel.sauce.unit.rawValue)")
+                        ProgressView(value: clampedProgress, total: safeMaxAmount)
+                    }
+                    
+                    Section("Consume") {
+                        HStack {
+                            TextField("Amount (ml)", value: $viewModel.amount, format: .number)
+                                .keyboardType(.decimalPad)
+                                .focused($focusedField, equals: .consume)
+                            Button("Consume") {
+                                viewModel.consume()
+                                dismiss()
+                            }
+                        }
                     }
                 }
             }
         }
         .navigationTitle(viewModel.sauce.name)
         .toolbar {
-            Button(action: {
-                viewModel.delete()
-                dismiss()
-            }) {
-                Image(systemName: "trash")
-                    .symbolRenderingMode(.monochrome)
-                    .foregroundStyle(.red)
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    focusedField = nil
+                }
             }
+            
+            ToolbarItemGroup(placement: .confirmationAction) {
+                Button(action: {
+                    showDeleteConfirmation = true
+                }) {
+                    Image(systemName: "trash")
+                        .symbolRenderingMode(.monochrome)
+                        .foregroundStyle(.red)
+                }
+            }
+        }
+        .alert("", isPresented: $showDeleteConfirmation) {
+            Button("DELETE") {
+                Task {
+                    viewModel.delete()
+                    dismiss()
+                }
+            }
+            .foregroundStyle(.red)
+            
+            Button("Cancel") {
+                showDeleteConfirmation = false
+            }
+            
+        } message: {
+            Text("Are you sure you want to delete this recipe? This cannot be undone.")
         }
     }
 }
@@ -74,4 +112,3 @@ struct SauceDetailsView: View {
 //                             batchDate: Date())
 //    SauceDetailsView(sauce: sauce)
 }
-

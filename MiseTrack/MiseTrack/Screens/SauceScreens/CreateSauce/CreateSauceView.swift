@@ -10,12 +10,18 @@ import SauceServices
 import RecipeServices
 import Models
 
+private enum Field: Hashable {
+    case quantityField
+}
+
 struct CreateSauceView: View {
     @StateObject private var viewModel: CreateSauceViewModel
     @Binding var isPresented: Bool
     
     private let sauceService: SauceServicesProtocol
     private let recipeService: RecipeServiceProtocol
+    
+    @FocusState private var focusedField: Field?
     
     let onSauceCreated: () -> Void
     
@@ -75,7 +81,9 @@ struct CreateSauceView: View {
                             
                             HStack {
                                 TextField("Quantity", value: $viewModel.actualYield, format: .number)
+                                    .textFieldStyle(.roundedBorder)
                                     .keyboardType(.decimalPad)
+                                    .focused($focusedField, equals: .quantityField)
                                 Spacer()
                                 Text("ml")
                             }
@@ -97,6 +105,13 @@ struct CreateSauceView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
                         isPresented = false
+                    }
+                }
+                
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        focusedField = nil
                     }
                 }
             }

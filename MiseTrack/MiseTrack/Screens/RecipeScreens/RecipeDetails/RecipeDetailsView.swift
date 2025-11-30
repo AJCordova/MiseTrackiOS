@@ -233,6 +233,12 @@ struct RecipeDetailsView: View {
                     }
                 }
             }
+            .foregroundStyle(.red)
+            
+            Button("Cancel") {
+                showDeleteConfirmation = false
+            }
+            
         } message: {
             Text("Are you sure you want to delete this recipe? This cannot be undone.")
         }

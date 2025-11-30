@@ -14,7 +14,7 @@ import RecipeServices
 class SauceDetailsViewModel: ObservableObject {
     @Published var sauce: Sauce
     @Published var amount: Double = 0.00
-    // TODO: sauce instance must only come from viewmodel.sauce
+    @Published var isLoading = false
     private let sauceService: SauceServicesProtocol
     
     public init(sauceService: SauceServicesProtocol, sauce: Sauce) {
@@ -24,23 +24,29 @@ class SauceDetailsViewModel: ObservableObject {
     
     func consume() {
         let service = sauceService
+        isLoading = true
         Task {
             do {
                 _ = try await service.updateSauceQuantity(id: sauce.id,
                                                           currentQuantity: sauce.currentQuantity - amount)
+                isLoading = false
             } catch {
                 print("Error on sauce quantity update")
+                isLoading = false
             }
         }
     }
     
     func delete() {
         let service = sauceService
+        isLoading = true
         Task {
             do {
                 try await service.deleteSauce(id: sauce.id)
+                isLoading = false
             } catch {
                 print("Error on sauce delete")
+                isLoading = false
             }
         }
     }

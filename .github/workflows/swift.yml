@@ -24,7 +24,7 @@ jobs:
     
     - name: Build
       with:
-       path:/MiseTrack
+       path: /MiseTrack
       run: swift build -v
       
     - name: Run tests

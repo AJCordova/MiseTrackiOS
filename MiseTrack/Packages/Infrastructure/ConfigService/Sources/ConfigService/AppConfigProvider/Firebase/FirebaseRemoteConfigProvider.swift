@@ -20,14 +20,14 @@ public final class FirebaseRemoteConfigProvider: ConfigProviderProtocol {
         try await remoteConfigClient.fetchAndActivate()
     }
     
-    public func getBool(_ key: String) -> Bool {
-        remoteConfigClient.getBool(key)
+    public func getBool(_ key: ConfigKeys) -> Bool {
+        remoteConfigClient.getBool(key.rawValue)
     }
     
-    public func getString(_ key: String) -> String {
-        remoteConfigClient.getString(key)
+    public func getString(_ key: ConfigKeys) -> String {
+        remoteConfigClient.getString(key.rawValue)
     }
     
-    public func getDouble(_ key: String) -> Double {
-        remoteConfigClient.getDouble(key)
+    public func getDouble(_ key: ConfigKeys) -> Double {
+        remoteConfigClient.getDouble(key.rawValue)
     }}

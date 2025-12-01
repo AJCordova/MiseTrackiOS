@@ -9,8 +9,8 @@ import Foundation
 
 public protocol ConfigProviderProtocol: Sendable {
     func fetchConfig() async throws
-    func getBool(_ key: String) -> Bool
-    func getString(_ key: String) -> String
-    func getDouble(_ key: String) -> Double
+    func getBool(_ key: ConfigKeys) -> Bool
+    func getString(_ key: ConfigKeys) -> String
+    func getDouble(_ key: ConfigKeys) -> Double
     // func getConfig() -> AppConfig // Use for custom config object
 }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A71DCF2A2ED0F0FA00ABE565 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = A71DCF292ED0F0FA00ABE565 /* Models */; };
 		A725DF922ED228D3001F80DE /* DataService in Frameworks */ = {isa = PBXBuildFile; productRef = A725DF912ED228D3001F80DE /* DataService */; };
+		A749FF252EDE3FC400C2D207 /* ConfigService in Frameworks */ = {isa = PBXBuildFile; productRef = A749FF242EDE3FC400C2D207 /* ConfigService */; };
 		A7510F572ED713D000409BC2 /* RecipeServices in Frameworks */ = {isa = PBXBuildFile; productRef = A7510F562ED713D000409BC2 /* RecipeServices */; };
 		A7510F592ED713D300409BC2 /* SauceServices in Frameworks */ = {isa = PBXBuildFile; productRef = A7510F582ED713D300409BC2 /* SauceServices */; };
 		A7796A562ED3819900C147D1 /* FirebaseServices in Frameworks */ = {isa = PBXBuildFile; productRef = A7796A552ED3819900C147D1 /* FirebaseServices */; };
@@ -111,6 +112,7 @@
 			files = (
 				A7796A562ED3819900C147D1 /* FirebaseServices in Frameworks */,
 				A71DCF2A2ED0F0FA00ABE565 /* Models in Frameworks */,
+				A749FF252EDE3FC400C2D207 /* ConfigService in Frameworks */,
 				A7510F572ED713D000409BC2 /* RecipeServices in Frameworks */,
 				A725DF922ED228D3001F80DE /* DataService in Frameworks */,
 				A7510F592ED713D300409BC2 /* SauceServices in Frameworks */,
@@ -189,6 +191,7 @@
 				A7796A552ED3819900C147D1 /* FirebaseServices */,
 				A7510F562ED713D000409BC2 /* RecipeServices */,
 				A7510F582ED713D300409BC2 /* SauceServices */,
+				A749FF242EDE3FC400C2D207 /* ConfigService */,
 			);
 			productName = MiseTrack;
 			productReference = A71B51C72EB7C01300AD2F96 /* MiseTrack.app */;
@@ -650,6 +653,10 @@
 		A725DF912ED228D3001F80DE /* DataService */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DataService;
+		};
+		A749FF242EDE3FC400C2D207 /* ConfigService */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ConfigService;
 		};
 		A7510F562ED713D000409BC2 /* RecipeServices */ = {
 			isa = XCSwiftPackageProductDependency;

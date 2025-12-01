@@ -66,6 +66,7 @@
 				Base/Models,
 				Features/RecipeServices,
 				Features/SauceServices,
+				Infrastructure/ConfigService,
 				Infrastructure/DataService,
 				Infrastructure/FirebaseServices,
 			);

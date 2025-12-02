@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 @main
 struct MiseTrackApp: App {
+    @StateObject private var serviceContainer = ServiceContainer()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(serviceContainer)
         }
     }
 }

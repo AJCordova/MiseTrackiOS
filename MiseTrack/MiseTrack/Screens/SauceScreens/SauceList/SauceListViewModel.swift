@@ -26,7 +26,6 @@ class SauceListViewModel: ObservableObject {
         
         if let batchLimits = self.configService.getJSON(.batchLimits, as: BatchLimits.self) {
             self.batchLimits = batchLimits
-            print(self.batchLimits.batchAmountLimitMl)
         } else {
             self.batchLimits = BatchLimits(batchAmountLimitMl: 1000, batchExpirationInSeconds: 259200)
         }
@@ -50,38 +49,42 @@ class SauceListViewModel: ObservableObject {
     }
     
     func getExpirationDate(for sauce: Sauce) -> Date {
-        let seconds: TimeInterval = self.batchLimits.batchExpirationInSeconds
-        return sauce.batchDate.addingTimeInterval(seconds)
+//        let seconds: TimeInterval = config.batchExpirationInSeconds
+//        return sauce.batchDate.addingTimeInterval(seconds)
+        return self.sauceService.getExpirationDate(for: sauce, config: batchLimits)
     }
     
     func getFreshStatus(for sauce: Sauce) -> FreshnessStatus {
-        let now = Date()
-        let oneDay: TimeInterval = 86_400
-        let expirationDate = getExpirationDate(for: sauce)
-        
-        if now >= expirationDate {
-            return .expired
-        }
-        
-        if now >= expirationDate - oneDay {
-            return .expiringSoon
-        }
-        
-        return .fresh
+//        let now = Date()
+//        let oneDay: TimeInterval = 86_400
+//        let expirationDate = getExpirationDate(for: sauce, config: config)
+//        
+//        if now >= expirationDate {
+//            return .expired
+//        }
+//        
+//        if now >= expirationDate - oneDay {
+//            return .expiringSoon
+//        }
+//        
+//        return .fresh
+        return self.sauceService.getFreshnessStatus(for: sauce, config: batchLimits)
     }
     
     func getQuantityStatus(for sauce: Sauce) -> QuantityStatus {
-        let maxAmount = max(self.batchLimits.batchAmountLimitMl, 0.0001)
-        let currentLevel = min(max(sauce.currentQuantity, 0), maxAmount)
+//        let maxAmount = max(config.batchAmountLimitMl, 0.0001)
+//        let currentLevel = min(max(sauce.currentQuantity, 0), maxAmount)
+//        
+//        if currentLevel <= 0 {
+//            return .empty
+//        }
+//        
+//        if (currentLevel / maxAmount <= 0.5) {
+//            return .warning
+//        }
+//        
+//        return .stocked
         
-        if currentLevel <= 0 {
-            return .empty
-        }
-        
-        if (currentLevel / maxAmount <= 0.5) {
-            return .warning
-        }
-        
-        return .stocked
+        return self.sauceService.getQuantityStatus(for: sauce, config: batchLimits)
     }
 }

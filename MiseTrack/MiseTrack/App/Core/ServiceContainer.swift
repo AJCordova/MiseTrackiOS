@@ -30,7 +30,6 @@ class ServiceContainer: ObservableObject {
         Task {
             do {
                 try await configService.fetchConfig()
-                print("Successfully fetched remote config.")
             } catch {
                 print("Fetching remote config failed. Using default settings.")
             }

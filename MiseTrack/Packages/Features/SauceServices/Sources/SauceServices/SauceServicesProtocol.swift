@@ -15,7 +15,9 @@ public protocol SauceServicesProtocol: Sendable {
     func createSauce(name: String, currentQuantity: Double, unit: Units, batchDate: Date) async throws -> Sauce
     func updateSauceQuantity(id: String, currentQuantity: Double) async throws -> Sauce
     func deleteSauce(id: String) async throws
-//    func getQuantityStatus(for sauce: Sauce) -> QuantityStatus
-//    func getFreshnessStatus(for sauce: Sauce) -> FreshnessStatus
-//    func getExpiration(for sauce: Sauce) -> Date
+    
+    //
+    func getQuantityStatus(for sauce: Sauce, config: BatchLimits) -> QuantityStatus
+    func getFreshnessStatus(for sauce: Sauce, config: BatchLimits) -> FreshnessStatus
+    func getExpirationDate(for sauce: Sauce, config: BatchLimits) -> Date
 }

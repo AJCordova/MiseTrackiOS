@@ -30,7 +30,6 @@ class SauceDetailsViewModel: ObservableObject {
         
         if let batchLimits = self.configService.getJSON(.batchLimits, as: BatchLimits.self) {
             self.batchLimits = batchLimits
-            print(self.batchLimits.batchAmountLimitMl)
         } else {
             self.batchLimits = BatchLimits(batchAmountLimitMl: 1000, batchExpirationInSeconds: 259200)
         }

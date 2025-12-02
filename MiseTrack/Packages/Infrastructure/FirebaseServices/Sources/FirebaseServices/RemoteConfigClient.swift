@@ -64,7 +64,6 @@ public final class RemoteConfigClient: Sendable {
         
         do {
             let decoded = try JSONDecoder().decode(T.self, from: jsonData)
-            print("Decoded for key \(key): decoded")
             return decoded
         } catch {
             print("Failed to decode for key \(key): \(error.localizedDescription)")

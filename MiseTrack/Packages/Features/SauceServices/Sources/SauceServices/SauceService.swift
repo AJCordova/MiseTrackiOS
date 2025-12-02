@@ -58,15 +58,39 @@ public final class SauceService: SauceServicesProtocol {
         try await repository.delete(id: id)
     }
     
-//    public func getQuantityStatus(for sauce: Models.Sauce) -> Models.QuantityStatus {
-//        <#code#>
-//    }
-//    
-//    public func getFreshnessStatus(for sauce: Models.Sauce) -> Models.FreshnessStatus {
-//        <#code#>
-//    }
-//    
-//    public func getExpiration(for sauce: Models.Sauce) -> Date {
-//        <#code#>
-//    }
+    public func getQuantityStatus(for sauce: Models.Sauce, config: Models.BatchLimits) -> Models.QuantityStatus {
+        let maxAmount = max(config.batchAmountLimitMl, 0.0001)
+        let currentLevel = min(max(sauce.currentQuantity, 0), maxAmount)
+        
+        if currentLevel <= 0 {
+            return .empty
+        }
+        
+        if (currentLevel / maxAmount <= 0.5) {
+            return .warning
+        }
+        
+        return .stocked
+    }
+    
+    public func getFreshnessStatus(for sauce: Models.Sauce, config: Models.BatchLimits) -> Models.FreshnessStatus {
+        let now = Date()
+        let oneDay: TimeInterval = 86_400
+        let expirationDate = getExpirationDate(for: sauce, config: config)
+        
+        if now >= expirationDate {
+            return .expired
+        }
+        
+        if now >= expirationDate - oneDay {
+            return .expiringSoon
+        }
+        
+        return .fresh
+    }
+    
+    public func getExpirationDate(for sauce: Models.Sauce, config: Models.BatchLimits) -> Date {
+        let seconds: TimeInterval = config.batchExpirationInSeconds
+        return sauce.batchDate.addingTimeInterval(seconds)
+    }
 }

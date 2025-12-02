@@ -17,19 +17,14 @@ private enum Field: Hashable {
 struct SauceDetailsView: View {
     @EnvironmentObject var service: ServiceContainer
     @Environment(\.dismiss) private var dismiss
+    
     @FocusState private var focusedField: Field?
-    @StateObject private var viewModel: SauceDetailsViewModel
+    
     @State private var showDeleteConfirmation: Bool = false
+    @StateObject private var viewModel: SauceDetailsViewModel
     
-    private let maxAmount = 2000.00 // TODO: value should come from viewmodel -> config
-    
-    private var safeMaxAmount: Double { max(maxAmount, 0.0001) }
-    private var clampedProgress: Double { min(max(viewModel.sauce.currentQuantity, 0), safeMaxAmount) }
-    
-    public init(sauce: Sauce,
-                sauceService: SauceServicesProtocol) {
-        _viewModel = StateObject(wrappedValue: SauceDetailsViewModel(sauceService: sauceService,
-                                                                     sauce: sauce))
+    public init(viewModel: SauceDetailsViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
@@ -45,7 +40,7 @@ struct SauceDetailsView: View {
                     
                     Section("Quantity") {
                         Text("Current Quantity: \(String(format: "%.2f", viewModel.sauce.currentQuantity)) \(viewModel.sauce.unit.rawValue)")
-                        ProgressView(value: clampedProgress, total: safeMaxAmount)
+                        ProgressView(value: viewModel.sauce.currentQuantity, total: viewModel.batchLimits.batchAmountLimitMl)
                     }
                     
                     Section("Consume") {

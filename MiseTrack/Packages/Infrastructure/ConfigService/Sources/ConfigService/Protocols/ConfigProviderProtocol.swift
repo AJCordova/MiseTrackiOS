@@ -12,5 +12,6 @@ public protocol ConfigProviderProtocol: Sendable {
     func getBool(_ key: ConfigKeys) -> Bool
     func getString(_ key: ConfigKeys) -> String
     func getDouble(_ key: ConfigKeys) -> Double
+    func getJSON<T: Decodable>(_ key: ConfigKeys, as type: T.Type) -> T?
     // func getConfig() -> AppConfig // Use for custom config object
 }

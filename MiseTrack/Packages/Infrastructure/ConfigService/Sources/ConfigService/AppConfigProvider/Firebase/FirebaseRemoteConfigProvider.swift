@@ -30,4 +30,9 @@ public final class FirebaseRemoteConfigProvider: ConfigProviderProtocol {
     
     public func getDouble(_ key: ConfigKeys) -> Double {
         remoteConfigClient.getDouble(key.rawValue)
-    }}
+    }
+    
+    public func getJSON<T>(_ key: ConfigKeys, as type: T.Type) -> T? where T : Decodable {
+        remoteConfigClient.getJSON(key.rawValue, as: type)
+    }
+}

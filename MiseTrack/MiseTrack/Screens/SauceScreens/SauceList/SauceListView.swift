@@ -31,8 +31,10 @@ struct SauceListView: View {
                 } else if !viewModel.isLoading {
                     List {
                         ForEach(viewModel.sauces) { sauce in
-                            NavigationLink(destination: SauceDetailsView(sauce: sauce,
-                                                                         sauceService: service.sauceService)) {
+                            NavigationLink(destination: SauceDetailsView(viewModel: SauceDetailsViewModel(sauce: sauce,
+                                                                                                          sauceService: service.sauceService,
+                                                                                                          configService: service.configService)))
+                            {
                                 SauceListItemView(sauce: sauce)
                             }
                         }

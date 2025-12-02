@@ -38,7 +38,7 @@ class SauceListViewModel: ObservableObject {
         Task {
             do {
                 let retrievedSauces = try await self.sauceService.getAllSauces()
-                let sorted = retrievedSauces.sorted { $0.batchDate < $1.batchDate }
+                let sorted = retrievedSauces.sorted { $0.batchDate > $1.batchDate }
                 self.sauces = sorted
                 self.isLoading = false
                 self.errorMessage = nil

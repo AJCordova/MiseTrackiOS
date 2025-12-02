@@ -14,21 +14,12 @@ import ConfigService
 import UIKit
 
 struct ContentView: View {
-    @EnvironmentObject var service: ServiceContainer
-    private let sauceService: SauceServicesProtocol
-    private let recipeService: RecipeServiceProtocol
-    
+    @EnvironmentObject var service: ServiceContainer    
     @State var showUpdatePrompt: Bool = false
-    
-    public init(sauceService: SauceServicesProtocol = SauceService(),
-                    recipeService: RecipeServiceProtocol = RecipeService()) {
-            self.sauceService = sauceService
-            self.recipeService = recipeService
-    }
     
     var body: some View {
         TabView {
-            SauceListView(sauceService: sauceService, recipeService: recipeService)
+            SauceListView(viewModel: service.makeSauceListViewModel())
                 .tabItem {
                     Label("Sauces", systemImage: "drop.fill")
                 }

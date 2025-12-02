@@ -40,4 +40,8 @@ class ServiceContainer: ObservableObject {
     func makeRecipeListViewModel() -> RecipeListViewModel {
         return RecipeListViewModel(recipeService: recipeService, configService: configService)
     }
+    
+    func makeSauceListViewModel() -> SauceListViewModel {
+        return SauceListViewModel(sauceService: sauceService)
+    }
 }

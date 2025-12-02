@@ -15,23 +15,19 @@ private enum Field: Hashable {
 }
 
 struct SauceDetailsView: View {
+    @EnvironmentObject var service: ServiceContainer
     @Environment(\.dismiss) private var dismiss
-    
     @FocusState private var focusedField: Field?
-    
     @StateObject private var viewModel: SauceDetailsViewModel
-    
     @State private var showDeleteConfirmation: Bool = false
     
     private let maxAmount = 2000.00 // TODO: value should come from viewmodel -> config
-    private let sauceService: SauceServicesProtocol
     
     private var safeMaxAmount: Double { max(maxAmount, 0.0001) }
     private var clampedProgress: Double { min(max(viewModel.sauce.currentQuantity, 0), safeMaxAmount) }
     
     public init(sauce: Sauce,
                 sauceService: SauceServicesProtocol) {
-        self.sauceService = sauceService
         _viewModel = StateObject(wrappedValue: SauceDetailsViewModel(sauceService: sauceService,
                                                                      sauce: sauce))
     }
@@ -101,7 +97,7 @@ struct SauceDetailsView: View {
             }
             
         } message: {
-            Text("Are you sure you want to delete this recipe? This cannot be undone.")
+            Text("Are you sure you want to delete this sauce? This cannot be undone.")
         }
     }
 }

@@ -5,16 +5,27 @@ name: Swift
 
 on:
   push:
-    branches: [ "main", "develop", "sandox/modular-mvvm" ]
+    branches: [ "main", "sandbox/modular-mvvm",  ]
   pull_request:
-    branches: [ "main", "develop", "sandox/modular-mvvm" ]
+    branches: [ "main", "sandbox/modular-mvvm" ]
 
 jobs:
   build:
+    name: Build
+    env:
+      DEVICE: "iPhone 16e"
+      DERIVED_DATA_PATH: "DerivedData"
+      
     runs-on: macos-latest
+
     steps:
+    
     - uses: actions/checkout@v4
+    
     - name: Build
+      with:
+       path: /MiseTrack
       run: swift build -v
+      
     - name: Run tests
       run: swift test -v

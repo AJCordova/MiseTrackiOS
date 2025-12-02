@@ -44,15 +44,17 @@ struct SauceDetailsView: View {
                         ProgressView(value: viewModel.sauce.currentQuantity, total: viewModel.batchLimits.batchAmountLimitMl)
                     }
                     
-                    Section("Consume") {
-                        HStack {
-                            TextField("Amount (ml)", value: $viewModel.amount, format: .number)
-                                .keyboardType(.decimalPad)
-                                .focused($focusedField, equals: .consume)
-                            Button("Consume") {
-                                Task {
-                                    try await viewModel.consume()
-                                    dismiss()
+                    if viewModel.getQuantityStatus() != .empty && viewModel.getFreshStatus() != .expired {
+                        Section("Consume") {
+                            HStack {
+                                TextField("Amount (ml)", value: $viewModel.amount, format: .number)
+                                    .keyboardType(.decimalPad)
+                                    .focused($focusedField, equals: .consume)
+                                Button("Consume") {
+                                    Task {
+                                        try await viewModel.consume()
+                                        dismiss()
+                                    }
                                 }
                             }
                         }

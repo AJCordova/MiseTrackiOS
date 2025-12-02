@@ -37,7 +37,8 @@ struct SauceListView: View {
                             {
                                 SauceListItemView(sauce: sauce,
                                                   expirationDate: viewModel.getExpirationDate(for: sauce),
-                                                  freshnessStatus: viewModel.getFreshStatus(for: sauce))
+                                                  freshnessStatus: viewModel.getFreshStatus(for: sauce),
+                                                  quantityStatus: viewModel.getQuantityStatus(for: sauce))
                             }
                         }
                     }

@@ -57,4 +57,16 @@ public final class SauceService: SauceServicesProtocol {
     public func deleteSauce(id: String) async throws {
         try await repository.delete(id: id)
     }
+    
+//    public func getQuantityStatus(for sauce: Models.Sauce) -> Models.QuantityStatus {
+//        <#code#>
+//    }
+//    
+//    public func getFreshnessStatus(for sauce: Models.Sauce) -> Models.FreshnessStatus {
+//        <#code#>
+//    }
+//    
+//    public func getExpiration(for sauce: Models.Sauce) -> Date {
+//        <#code#>
+//    }
 }

@@ -69,4 +69,19 @@ class SauceListViewModel: ObservableObject {
         
         return .fresh
     }
+    
+    func getQuantityStatus(for sauce: Sauce) -> QuantityStatus {
+        let maxAmount = max(self.batchLimits.batchAmountLimitMl, 0.0001)
+        let currentLevel = min(max(sauce.currentQuantity, 0), maxAmount)
+        
+        if currentLevel <= 0 {
+            return .empty
+        }
+        
+        if (currentLevel / maxAmount <= 0.5) {
+            return .warning
+        }
+        
+        return .stocked
+    }
 }

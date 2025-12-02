@@ -64,4 +64,35 @@ class SauceDetailsViewModel: ObservableObject {
         let seconds: TimeInterval = self.batchLimits.batchExpirationInSeconds
         return sauce.batchDate.addingTimeInterval(seconds)
     }
+    
+    func getFreshStatus() -> FreshnessStatus {
+        let now = Date()
+        let oneDay: TimeInterval = 86_400
+        let expirationDate = getExpirationDate()
+        
+        if now >= expirationDate {
+            return .expired
+        }
+        
+        if now >= expirationDate - oneDay {
+            return .expiringSoon
+        }
+        
+        return .fresh
+    }
+    
+    func getQuantityStatus() -> QuantityStatus {
+        let maxAmount = max(self.batchLimits.batchAmountLimitMl, 0.0001)
+        let currentLevel = min(max(sauce.currentQuantity, 0), maxAmount)
+        
+        if currentLevel <= 0 {
+            return .empty
+        }
+        
+        if (currentLevel / maxAmount <= 0.5) {
+            return .warning
+        }
+        
+        return .stocked
+    }
 }

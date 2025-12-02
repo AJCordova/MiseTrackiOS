@@ -11,16 +11,15 @@ import Models
 import RecipeServices
 
 struct RecipeDetailsView: View {
+    @EnvironmentObject var service: ServiceContainer
     @StateObject private var viewModel: RecipeDetailsViewModel
     @State private var showDeleteConfirmation = false
     @State private var showError = false
     
     @Environment(\.dismiss) var dismiss
     
-    public init(recipe: Recipe,
-                recipeService: RecipeServiceProtocol) {
-        _viewModel = StateObject(wrappedValue: RecipeDetailsViewModel(recipe: recipe,
-                                                                      service: recipeService))
+    public init(viewModel: RecipeDetailsViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
@@ -179,7 +178,7 @@ struct RecipeDetailsView: View {
             .navigationTitle("Recipe Details")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                if !viewModel.isEditing {
+                if !viewModel.isEditing && viewModel.isEditingEnabled() {
                     Button(action: {
                         viewModel.isEditing = true
                     }) {
@@ -196,25 +195,25 @@ struct RecipeDetailsView: View {
                             .foregroundStyle(.red)
                     }
                 } else {
-                    if viewModel.isFormValid {
+                    if viewModel.isFormValid && viewModel.isEditingEnabled() {
                         Button(action: {
                             viewModel.isEditing = false
                             Task {
-                                try await viewModel.saveRecipe()
+                                await viewModel.saveRecipe()
                                 dismiss()
                             }
                         }) {
                             Text("Save")
                         }
                         .foregroundStyle(.green)
+                        
+                        Button(action: {
+                            viewModel.isEditing = false
+                        }) {
+                            Text("Cancel")
+                        }
+                        .foregroundStyle(.red)
                     }
-                    
-                    Button(action: {
-                        viewModel.isEditing = false
-                    }) {
-                        Text("Cancel")
-                    }
-                    .foregroundStyle(.red)
                 }
             }
         }
@@ -222,7 +221,7 @@ struct RecipeDetailsView: View {
         .alert("", isPresented: $showDeleteConfirmation) {
             Button("DELETE") {
                 Task {
-                    try await viewModel.deleteRecipe()
+                    await viewModel.deleteRecipe()
                     dismiss()
                 }
             }

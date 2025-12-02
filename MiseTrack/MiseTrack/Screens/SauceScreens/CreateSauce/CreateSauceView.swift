@@ -18,22 +18,15 @@ struct CreateSauceView: View {
     @StateObject private var viewModel: CreateSauceViewModel
     @Binding var isPresented: Bool
     
-    private let sauceService: SauceServicesProtocol
-    private let recipeService: RecipeServiceProtocol
-    
     @FocusState private var focusedField: Field?
     
     let onSauceCreated: () -> Void
     
     public init(isPresented: Binding<Bool>,
-                recipeService: RecipeServiceProtocol,
-                sauceService: SauceServicesProtocol,
+                viewModel: CreateSauceViewModel,
                 onSauceCreated: @escaping () -> Void) {
-        self.sauceService = sauceService
-        self.recipeService = recipeService
         _isPresented = isPresented
-        _viewModel = StateObject(wrappedValue: CreateSauceViewModel(recipeService: recipeService,
-                                                                    sauceService: sauceService))
+        _viewModel = StateObject(wrappedValue: viewModel)
         self.onSauceCreated = onSauceCreated
     }
     

@@ -10,6 +10,9 @@ import Models
 
 struct SauceListItemView: View {
     let sauce: Sauce
+    let expirationDate: Date
+    let freshnessStatus: FreshnessStatus
+    let quantityStatus: QuantityStatus
     
     var body: some View {
         HStack(alignment: .center) {
@@ -17,21 +20,41 @@ struct SauceListItemView: View {
                 Text(sauce.name).font(.headline)
                 Text("Batch date: \(sauce.batchDate.formatted(date: .abbreviated, time: .omitted))")
                     .font(.subheadline)
-                Text("Expires: *config here*")
+                Text("Expires: \(expirationDate.formatted(date: .abbreviated, time: .omitted))")
                     .font(.caption)
                 Spacer()
-                Text("Notes")
-                    .font(.footnote)
+                
+                if quantityStatus != .empty {
+                    Text(getFreshnessStatusText())
+                        .font(.footnote)
+                }
             }
             
             Spacer()
-            VStack(alignment: .trailing, spacing: 4) {
+            VStack(alignment: .center, spacing: 4) {
                 Text("\(String(format: "%.2f", sauce.currentQuantity)) \(sauce.unit.rawValue)")
                     .font(.title3)
+                
+                Text(getQuantityStatusText())
             }
         }
     }
     
+    private func getFreshnessStatusText() -> String {
+        switch freshnessStatus {
+        case .expired: return "Expired"
+        case .expiringSoon: return "Expiring soon"
+        case .fresh: return "Fresh"
+        }
+    }
+    
+    private func getQuantityStatusText() -> String {
+        switch quantityStatus {
+        case .stocked: return "Stocked"
+        case .warning: return "Low"
+        case .empty: return "Empty"
+        }
+    }
 }
 
 
@@ -42,5 +65,18 @@ struct SauceListItemView: View {
                              currentQuantity: 500.00,
                              unit: .milliliter,
                              batchDate: Date())
-    SauceListItemView(sauce: sauce)
+    SauceListItemView(sauce: sauce,
+                      expirationDate: sauce.batchDate.addingTimeInterval(259200),
+                      freshnessStatus: .expiringSoon,
+                      quantityStatus: .stocked)
+    SauceListItemView(sauce: sauce,
+                      expirationDate:
+                        sauce.batchDate.addingTimeInterval(259200),
+                      freshnessStatus: .expired,
+                      quantityStatus: .warning)
+    SauceListItemView(sauce: sauce,
+                      expirationDate:
+                        sauce.batchDate.addingTimeInterval(259200),
+                      freshnessStatus: .fresh,
+                      quantityStatus: .empty)
 }

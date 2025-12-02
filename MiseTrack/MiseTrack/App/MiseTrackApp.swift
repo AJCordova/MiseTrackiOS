@@ -10,16 +10,12 @@ import FirebaseCore
 
 @main
 struct MiseTrackApp: App {
-    @StateObject private var services: ServiceContainer = ServiceContainer()
-    
-    init() {
-        FirebaseApp.configure()
-    }
+    @StateObject private var serviceContainer = ServiceContainer()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(services)
+                .environmentObject(serviceContainer)
         }
     }
 }

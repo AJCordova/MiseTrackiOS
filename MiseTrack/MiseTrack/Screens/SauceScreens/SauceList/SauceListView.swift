@@ -10,16 +10,12 @@ import SauceServices
 import RecipeServices
 
 struct SauceListView: View {
+    @EnvironmentObject var service: ServiceContainer
     @StateObject private var viewModel: SauceListViewModel
     @State private var showCreateSauceView = false
     
-    private let sauceService: SauceServicesProtocol
-    private let recipeService: RecipeServiceProtocol
-    
-    public init(sauceService: SauceServicesProtocol, recipeService: RecipeServiceProtocol) {
-        self.sauceService = sauceService
-        self.recipeService = recipeService
-        _viewModel = StateObject(wrappedValue: SauceListViewModel(sauceService: sauceService))
+    public init(viewModel: SauceListViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
@@ -35,9 +31,14 @@ struct SauceListView: View {
                 } else if !viewModel.isLoading {
                     List {
                         ForEach(viewModel.sauces) { sauce in
-                            NavigationLink(destination: SauceDetailsView(sauce: sauce,
-                                                                         sauceService: sauceService)) {
-                                SauceListItemView(sauce: sauce)
+                            NavigationLink(destination: SauceDetailsView(viewModel: SauceDetailsViewModel(sauce: sauce,
+                                                                                                          sauceService: service.sauceService,
+                                                                                                          configService: service.configService)))
+                            {
+                                SauceListItemView(sauce: sauce,
+                                                  expirationDate: viewModel.getExpirationDate(for: sauce),
+                                                  freshnessStatus: viewModel.getFreshStatus(for: sauce),
+                                                  quantityStatus: viewModel.getQuantityStatus(for: sauce))
                             }
                         }
                     }
@@ -58,8 +59,8 @@ struct SauceListView: View {
             }
             .sheet(isPresented: $showCreateSauceView) {
                 CreateSauceView(isPresented: $showCreateSauceView,
-                                recipeService: recipeService,
-                                sauceService: sauceService) {
+                                viewModel: CreateSauceViewModel(recipeService: service.recipeService,
+                                                                sauceService: service.sauceService)) {
                     viewModel.loadSauces()
                 }
             }

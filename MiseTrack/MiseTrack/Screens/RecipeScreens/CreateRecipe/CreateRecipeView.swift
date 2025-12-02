@@ -13,8 +13,6 @@ struct CreateRecipeView: View {
     @Binding var isPresented: Bool
     
     @StateObject private var viewModel: CreateRecipeViewModel
-    
-    @State private var showError = false
     @State private var isCreating = false
     
     let onRecipeCreated: () -> Void
@@ -153,8 +151,11 @@ struct CreateRecipeView: View {
                     Button("Create") {
                         Task {
                             await viewModel.createRecipe()
-                            isPresented = false
-                            onRecipeCreated()
+                            
+                            if viewModel.errorMessage == nil {
+                                isPresented = false
+                                onRecipeCreated()
+                            }
                         }
                     }
                     .foregroundStyle(.green)
@@ -168,8 +169,8 @@ struct CreateRecipeView: View {
                     }
                 }
             }
-            .alert("Error", isPresented: $showError) {
-                Button("OK") { showError = false }
+            .alert("Error", isPresented: $viewModel.showError) {
+                Button("OK") { viewModel.showError = false }
             } message: {
                 Text(viewModel.errorMessage ?? "Unknown error")
             }

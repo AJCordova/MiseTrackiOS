@@ -17,6 +17,7 @@ class CreateRecipeViewModel: ObservableObject {
     @Published var quantity: Double = 0.00
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
+    @Published var showError: Bool = false
     
     private let recipeService: RecipeServiceProtocol
     
@@ -30,6 +31,7 @@ class CreateRecipeViewModel: ObservableObject {
         guard !self.name.isEmpty, !self.ingredients.isEmpty, !self.instructions.isEmpty, !self.quantity.isZero  else {
             self.isLoading = false
             self.errorMessage = "Some fields are empty."
+            self.showError = true
             return
         }
         
@@ -38,6 +40,7 @@ class CreateRecipeViewModel: ObservableObject {
         guard validIngredients.count == self.ingredients.count else {
             self.isLoading = false
             self.errorMessage = "Some ingredients are missing information."
+            self.showError = true
             return
         }
         
@@ -51,9 +54,11 @@ class CreateRecipeViewModel: ObservableObject {
                                                      volumeML: quantity)
             
             self.isLoading = false
+            self.showError = false
             self.errorMessage = nil
         } catch {
             self.isLoading = false
+            self.showError = false
             self.errorMessage = nil
         }
     }

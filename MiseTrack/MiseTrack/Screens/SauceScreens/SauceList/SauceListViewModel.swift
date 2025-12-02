@@ -7,6 +7,7 @@
 
 import Foundation
 import SauceServices
+import ConfigService
 import Models
 
 @MainActor
@@ -15,10 +16,20 @@ class SauceListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     
-    private let service: SauceServicesProtocol
+    private let sauceService: SauceServicesProtocol
+    private let configService: ConfigProviderProtocol
+    private let batchLimits: BatchLimits
     
-    public init(sauceService: SauceServicesProtocol) {
-        self.service = sauceService
+    public init(sauceService: SauceServicesProtocol, configService: ConfigProviderProtocol) {
+        self.sauceService = sauceService
+        self.configService = configService
+        
+        if let batchLimits = self.configService.getJSON(.batchLimits, as: BatchLimits.self) {
+            self.batchLimits = batchLimits
+            print(self.batchLimits.batchAmountLimitMl)
+        } else {
+            self.batchLimits = BatchLimits(batchAmountLimitMl: 1000, batchExpirationInSeconds: 259200)
+        }
     }
     
     func loadSauces() {
@@ -26,8 +37,8 @@ class SauceListViewModel: ObservableObject {
 
         Task {
             do {
-                let retrievedSauces = try await self.service.getAllSauces()
-                let sorted = retrievedSauces.sorted { $0.batchDate < $1.batchDate }
+                let retrievedSauces = try await self.sauceService.getAllSauces()
+                let sorted = retrievedSauces.sorted { $0.batchDate > $1.batchDate }
                 self.sauces = sorted
                 self.isLoading = false
                 self.errorMessage = nil
@@ -36,5 +47,41 @@ class SauceListViewModel: ObservableObject {
                 self.isLoading = false
             }
         }
+    }
+    
+    func getExpirationDate(for sauce: Sauce) -> Date {
+        let seconds: TimeInterval = self.batchLimits.batchExpirationInSeconds
+        return sauce.batchDate.addingTimeInterval(seconds)
+    }
+    
+    func getFreshStatus(for sauce: Sauce) -> FreshnessStatus {
+        let now = Date()
+        let oneDay: TimeInterval = 86_400
+        let expirationDate = getExpirationDate(for: sauce)
+        
+        if now >= expirationDate {
+            return .expired
+        }
+        
+        if now >= expirationDate - oneDay {
+            return .expiringSoon
+        }
+        
+        return .fresh
+    }
+    
+    func getQuantityStatus(for sauce: Sauce) -> QuantityStatus {
+        let maxAmount = max(self.batchLimits.batchAmountLimitMl, 0.0001)
+        let currentLevel = min(max(sauce.currentQuantity, 0), maxAmount)
+        
+        if currentLevel <= 0 {
+            return .empty
+        }
+        
+        if (currentLevel / maxAmount <= 0.5) {
+            return .warning
+        }
+        
+        return .stocked
     }
 }

@@ -16,6 +16,7 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(path: "../../Base/Models"),
         .package(path: "../FirebaseServices")
     ],
     targets: [
@@ -24,6 +25,7 @@ let package = Package(
         .target(
             name: "ConfigService",
             dependencies: [
+                .product(name: "Models", package: "Models"),
                 .product(name: "FirebaseServices", package: "FirebaseServices"),
             ]
         ),

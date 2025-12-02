@@ -7,6 +7,7 @@
 
 import Foundation
 import RecipeServices
+import ConfigService
 import Models
 
 @MainActor
@@ -27,11 +28,13 @@ class RecipeDetailsViewModel: ObservableObject {
         return true
     }
     
-    private let service: RecipeServiceProtocol
+    private let recipeService: RecipeServiceProtocol
+    private let configService: ConfigProviderProtocol
     private let originalRecipe: Recipe
     
-    public init(recipe: Recipe, service: RecipeServiceProtocol) {
-        self.service = service
+    public init(recipe: Recipe, recipeService: RecipeServiceProtocol, configService: ConfigProviderProtocol) {
+        self.recipeService = recipeService
+        self.configService = configService
         self.recipe = recipe
         self.originalRecipe = recipe
     }
@@ -45,7 +48,7 @@ class RecipeDetailsViewModel: ObservableObject {
             self.recipe.name = self.recipe.displayName.removingAllWhiteSpaceAndNewLines().lowercased()
             
             do {
-                let _ = try await self.service.updateRecipe(id: self.recipe.id,
+                let _ = try await self.recipeService.updateRecipe(id: self.recipe.id,
                                                             recipe: self.recipe)
                 self.isEditing = false
                 self.isSaving = false
@@ -65,12 +68,16 @@ class RecipeDetailsViewModel: ObservableObject {
         self.isLoading = true
         
         do {
-            try await self.service.deleteRecipe(id: self.recipe.id)
+            try await self.recipeService.deleteRecipe(id: self.recipe.id)
             self.isLoading = false
             self.errorMessage = nil
         } catch {
             self.isLoading = false
             self.errorMessage = error.localizedDescription
         }
+    }
+    
+    func isEditingEnabled() -> Bool {
+        return configService.getBool(.allowRecipeEdit)
     }
 }

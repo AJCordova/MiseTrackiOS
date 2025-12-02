@@ -15,25 +15,16 @@ private enum Field: Hashable {
 }
 
 struct SauceDetailsView: View {
+    @EnvironmentObject var service: ServiceContainer
     @Environment(\.dismiss) private var dismiss
     
     @FocusState private var focusedField: Field?
     
+    @State private var showDeleteConfirmation: Bool = false
     @StateObject private var viewModel: SauceDetailsViewModel
     
-    @State private var showDeleteConfirmation: Bool = false
-    
-    private let maxAmount = 2000.00 // TODO: value should come from viewmodel -> config
-    private let sauceService: SauceServicesProtocol
-    
-    private var safeMaxAmount: Double { max(maxAmount, 0.0001) }
-    private var clampedProgress: Double { min(max(viewModel.sauce.currentQuantity, 0), safeMaxAmount) }
-    
-    public init(sauce: Sauce,
-                sauceService: SauceServicesProtocol) {
-        self.sauceService = sauceService
-        _viewModel = StateObject(wrappedValue: SauceDetailsViewModel(sauceService: sauceService,
-                                                                     sauce: sauce))
+    public init(viewModel: SauceDetailsViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
@@ -45,22 +36,25 @@ struct SauceDetailsView: View {
                     Section("Information") {
                         Text("Name: \(viewModel.sauce.name)")
                         Text("Batch Date: \(viewModel.sauce.batchDate.formatted(date: .abbreviated, time: .omitted))")
+                        Text("Expiry Date: \(viewModel.getExpirationDate().formatted(date: .abbreviated, time: .omitted))")
                     }
                     
                     Section("Quantity") {
                         Text("Current Quantity: \(String(format: "%.2f", viewModel.sauce.currentQuantity)) \(viewModel.sauce.unit.rawValue)")
-                        ProgressView(value: clampedProgress, total: safeMaxAmount)
+                        ProgressView(value: viewModel.sauce.currentQuantity, total: viewModel.batchLimits.batchAmountLimitMl)
                     }
                     
-                    Section("Consume") {
-                        HStack {
-                            TextField("Amount (ml)", value: $viewModel.amount, format: .number)
-                                .keyboardType(.decimalPad)
-                                .focused($focusedField, equals: .consume)
-                            Button("Consume") {
-                                Task {
-                                    try await viewModel.consume()
-                                    dismiss()
+                    if viewModel.getQuantityStatus() != .empty && viewModel.getFreshStatus() != .expired {
+                        Section("Consume") {
+                            HStack {
+                                TextField("Amount (ml)", value: $viewModel.amount, format: .number)
+                                    .keyboardType(.decimalPad)
+                                    .focused($focusedField, equals: .consume)
+                                Button("Consume") {
+                                    Task {
+                                        try await viewModel.consume()
+                                        dismiss()
+                                    }
                                 }
                             }
                         }
@@ -101,7 +95,7 @@ struct SauceDetailsView: View {
             }
             
         } message: {
-            Text("Are you sure you want to delete this recipe? This cannot be undone.")
+            Text("Are you sure you want to delete this sauce? This cannot be undone.")
         }
     }
 }

@@ -28,7 +28,7 @@ class SauceListViewModel: ObservableObject {
             do {
                 let retrievedSauces = try await self.service.getAllSauces()
                 let sorted = retrievedSauces.sorted { $0.batchDate < $1.batchDate }
-                self.sauces = retrievedSauces
+                self.sauces = sorted
                 self.isLoading = false
                 self.errorMessage = nil
             } catch {

@@ -35,7 +35,9 @@ struct SauceListView: View {
                                                                                                           sauceService: service.sauceService,
                                                                                                           configService: service.configService)))
                             {
-                                SauceListItemView(sauce: sauce)
+                                SauceListItemView(sauce: sauce,
+                                                  expirationDate: viewModel.getExpirationDate(for: sauce),
+                                                  freshnessStatus: viewModel.getFreshStatus(for: sauce))
                             }
                         }
                     }

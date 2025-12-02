@@ -36,6 +36,7 @@ struct SauceDetailsView: View {
                     Section("Information") {
                         Text("Name: \(viewModel.sauce.name)")
                         Text("Batch Date: \(viewModel.sauce.batchDate.formatted(date: .abbreviated, time: .omitted))")
+                        Text("Expiry Date: \(viewModel.getExpirationDate().formatted(date: .abbreviated, time: .omitted))")
                     }
                     
                     Section("Quantity") {

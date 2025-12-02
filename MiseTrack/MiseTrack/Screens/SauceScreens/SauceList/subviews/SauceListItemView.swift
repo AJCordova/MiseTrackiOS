@@ -10,6 +10,8 @@ import Models
 
 struct SauceListItemView: View {
     let sauce: Sauce
+    let expirationDate: Date
+    let freshnessStatus: FreshnessStatus
     
     var body: some View {
         HStack(alignment: .center) {
@@ -17,10 +19,10 @@ struct SauceListItemView: View {
                 Text(sauce.name).font(.headline)
                 Text("Batch date: \(sauce.batchDate.formatted(date: .abbreviated, time: .omitted))")
                     .font(.subheadline)
-                Text("Expires: *config here*")
+                Text("Expires: \(expirationDate.formatted(date: .abbreviated, time: .omitted))")
                     .font(.caption)
                 Spacer()
-                Text("Notes")
+                Text(getFreshnessStatus())
                     .font(.footnote)
             }
             
@@ -32,6 +34,13 @@ struct SauceListItemView: View {
         }
     }
     
+    private func getFreshnessStatus() -> String {
+        switch freshnessStatus {
+        case .expired: return "Expired"
+        case .expiringSoon: return "Expiring soon"
+        case .fresh: return "Fresh"
+        }
+    }
 }
 
 
@@ -42,5 +51,7 @@ struct SauceListItemView: View {
                              currentQuantity: 500.00,
                              unit: .milliliter,
                              batchDate: Date())
-    SauceListItemView(sauce: sauce)
+    SauceListItemView(sauce: sauce, expirationDate: sauce.batchDate.addingTimeInterval(259200), freshnessStatus: .expiringSoon)
+    SauceListItemView(sauce: sauce, expirationDate: sauce.batchDate.addingTimeInterval(259200), freshnessStatus: .expired)
+    SauceListItemView(sauce: sauce, expirationDate: sauce.batchDate.addingTimeInterval(259200), freshnessStatus: .fresh)
 }

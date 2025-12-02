@@ -60,5 +60,8 @@ class SauceDetailsViewModel: ObservableObject {
         }
     }
     
-    
+    func getExpirationDate() -> Date {
+        let seconds: TimeInterval = self.batchLimits.batchExpirationInSeconds
+        return sauce.batchDate.addingTimeInterval(seconds)
+    }
 }

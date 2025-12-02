@@ -24,11 +24,11 @@ public final class RemoteConfigClient: Sendable {
     
     public func fetchAndActivate() async throws {
         do {
-//            let expirationDuration: TimeInterval = 0 // always fresh for dev
-//            let _ = try await remoteConfig.fetch(withExpirationDuration: expirationDuration)
-//            try await remoteConfig.activate()
+            let expirationDuration: TimeInterval = 0 // always fresh for dev
+            let _ = try await remoteConfig.fetch(withExpirationDuration: expirationDuration)
+            try await remoteConfig.activate()
             
-            try await remoteConfig.fetchAndActivate()
+//            try await remoteConfig.fetchAndActivate()
         } catch {
             throw RemoteConfigError.configNotFetched
         }

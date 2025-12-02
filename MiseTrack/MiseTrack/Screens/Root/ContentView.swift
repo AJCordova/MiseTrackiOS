@@ -14,16 +14,16 @@ import ConfigService
 import UIKit
 
 struct ContentView: View {
-    @EnvironmentObject private var services: ServiceContainer
+    @EnvironmentObject var service: ServiceContainer
     private let sauceService: SauceServicesProtocol
     private let recipeService: RecipeServiceProtocol
     
     @State var showUpdatePrompt: Bool = false
     
     public init(sauceService: SauceServicesProtocol = SauceService(),
-                recipeService: RecipeServiceProtocol = RecipeService()) {
-        self.sauceService = sauceService
-        self.recipeService = recipeService
+                    recipeService: RecipeServiceProtocol = RecipeService()) {
+            self.sauceService = sauceService
+            self.recipeService = recipeService
     }
     
     var body: some View {
@@ -33,7 +33,7 @@ struct ContentView: View {
                     Label("Sauces", systemImage: "drop.fill")
                 }
             
-            RecipeListView(recipeService: recipeService)
+            RecipeListView(viewModel: service.makeRecipeListViewModel())
                 .tabItem {
                     Label("Recipes", systemImage: "book.fill")
                 }
@@ -46,7 +46,7 @@ struct ContentView: View {
             Text("Please update to the latest version.")
         }
         .onAppear {
-            let remoteVersionNumber = services.configService.getString(.remoteVersion)
+            let remoteVersionNumber = service.configService.getString(.remoteVersion)
             guard let appVersion = UIApplication.appVersion else {
                 print("Error retrieving app version.")
                return
@@ -56,7 +56,6 @@ struct ContentView: View {
                 showUpdatePrompt = true
             }
         }
-        
     }
 }
 

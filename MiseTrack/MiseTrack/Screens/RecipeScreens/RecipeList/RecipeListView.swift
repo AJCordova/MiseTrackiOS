@@ -10,14 +10,12 @@ import Models
 import RecipeServices
 
 struct RecipeListView: View {
+    @EnvironmentObject var service: ServiceContainer
     @StateObject private var viewModel: RecipeListViewModel
     @State private var showCreateRecipeView = false
-    
-    private let recipeService: RecipeServiceProtocol
-    
-    public init(recipeService: RecipeServiceProtocol) {
-        self.recipeService = recipeService
-        _viewModel = StateObject(wrappedValue: RecipeListViewModel(recipeService: recipeService))
+
+    public init(viewModel: RecipeListViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
@@ -32,8 +30,10 @@ struct RecipeListView: View {
                 } else if !viewModel.isLoading {
                     List {
                         ForEach(viewModel.recipes) { recipe in
-                            NavigationLink(destination: RecipeDetailsView(recipe: recipe,
-                                                                          recipeService: recipeService)) {
+                            NavigationLink(destination: RecipeDetailsView(viewModel: RecipeDetailsViewModel(recipe: recipe,
+                                                                                                            recipeService: service.recipeService,
+                                                                                                            configService: service.configService)))
+                            {
                                 Text("\(recipe.displayName)")
                                     .font(.headline)
                             }
@@ -44,10 +44,12 @@ struct RecipeListView: View {
             }
             .navigationTitle("Recipes")
             .toolbar {
-                Button(action: { showCreateRecipeView = true }) {
-                    Image(systemName: "plus")
-                        .symbolRenderingMode(.monochrome)
-                        .foregroundStyle(.accent)
+                if viewModel.isEditingEnabled() {
+                    Button(action: { showCreateRecipeView = true }) {
+                        Image(systemName: "plus")
+                            .symbolRenderingMode(.monochrome)
+                            .foregroundStyle(.accent)
+                    }
                 }
                 
                 Button(action: {
@@ -60,7 +62,7 @@ struct RecipeListView: View {
             }
             .sheet(isPresented: $showCreateRecipeView) {
                 CreateRecipeView(isPresented: $showCreateRecipeView,
-                                 recipeService: recipeService) {
+                                 recipeService: service.recipeService) {
                     Task {
                         await viewModel.loadRecipes()
                     }

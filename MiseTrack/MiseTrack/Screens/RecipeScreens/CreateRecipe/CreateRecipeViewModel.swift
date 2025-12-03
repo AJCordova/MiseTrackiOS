@@ -16,8 +16,9 @@ class CreateRecipeViewModel: ObservableObject {
     @Published var instructions: [String] = [""]
     @Published var quantity: Double = 0.00
     @Published var isLoading = false
-    @Published var errorMessage: String? = nil
     @Published var showError: Bool = false
+    
+    var errorMessage: String? = nil
     
     private let recipeService: RecipeServiceProtocol
     
@@ -58,8 +59,8 @@ class CreateRecipeViewModel: ObservableObject {
             self.errorMessage = nil
         } catch {
             self.isLoading = false
-            self.showError = false
-            self.errorMessage = nil
+            self.showError = true
+            self.errorMessage = error.localizedDescription
         }
     }
     

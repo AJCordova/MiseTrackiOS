@@ -16,7 +16,9 @@ class RecipeDetailsViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var isEditing = false
     @Published var isSaving = false
-    @Published var errorMessage: String?
+    @Published var showError = false
+    
+    var errorMessage: String? = nil
     
     var isFormValid: Bool {
         if (recipe.displayName.isEmpty ||
@@ -60,6 +62,7 @@ class RecipeDetailsViewModel: ObservableObject {
                 self.isSaving = false
                 self.errorMessage = error.localizedDescription
                 self.isLoading = false
+                self.showError = true
             }
         }
     }
@@ -74,6 +77,7 @@ class RecipeDetailsViewModel: ObservableObject {
         } catch {
             self.isLoading = false
             self.errorMessage = error.localizedDescription
+            self.showError = true
         }
     }
     

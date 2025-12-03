@@ -14,7 +14,9 @@ import ConfigService
 class RecipeListViewModel: ObservableObject {
     @Published var recipes: [Recipe] = []
     @Published var isLoading = false
-    @Published var errorMessage: String?
+    @Published var showError = false
+    
+    var errorMessage: String? = nil
     
     private let recipeService: RecipeServiceProtocol
     private let configService: ConfigProviderProtocol
@@ -35,6 +37,7 @@ class RecipeListViewModel: ObservableObject {
         } catch {
             self.errorMessage = error.localizedDescription
             self.isLoading = false
+            self.showError = true
         }
     }
     

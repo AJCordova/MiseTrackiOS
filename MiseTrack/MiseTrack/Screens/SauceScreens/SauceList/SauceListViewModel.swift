@@ -14,7 +14,9 @@ import Models
 class SauceListViewModel: ObservableObject {
     @Published var sauces: [Sauce] = []
     @Published var isLoading = false
-    @Published var errorMessage: String?
+    @Published var showError = false
+    
+    var errorMessage: String? = nil
     
     private let sauceService: SauceServicesProtocol
     private let configService: ConfigProviderProtocol
@@ -42,49 +44,26 @@ class SauceListViewModel: ObservableObject {
                 self.isLoading = false
                 self.errorMessage = nil
             } catch {
-                self.errorMessage = error.localizedDescription
-                self.isLoading = false
+                self.presentThrownError(error)
             }
         }
     }
     
     func getExpirationDate(for sauce: Sauce) -> Date {
-//        let seconds: TimeInterval = config.batchExpirationInSeconds
-//        return sauce.batchDate.addingTimeInterval(seconds)
         return self.sauceService.getExpirationDate(for: sauce, config: batchLimits)
     }
     
     func getFreshStatus(for sauce: Sauce) -> FreshnessStatus {
-//        let now = Date()
-//        let oneDay: TimeInterval = 86_400
-//        let expirationDate = getExpirationDate(for: sauce, config: config)
-//        
-//        if now >= expirationDate {
-//            return .expired
-//        }
-//        
-//        if now >= expirationDate - oneDay {
-//            return .expiringSoon
-//        }
-//        
-//        return .fresh
         return self.sauceService.getFreshnessStatus(for: sauce, config: batchLimits)
     }
     
     func getQuantityStatus(for sauce: Sauce) -> QuantityStatus {
-//        let maxAmount = max(config.batchAmountLimitMl, 0.0001)
-//        let currentLevel = min(max(sauce.currentQuantity, 0), maxAmount)
-//        
-//        if currentLevel <= 0 {
-//            return .empty
-//        }
-//        
-//        if (currentLevel / maxAmount <= 0.5) {
-//            return .warning
-//        }
-//        
-//        return .stocked
-        
         return self.sauceService.getQuantityStatus(for: sauce, config: batchLimits)
+    }
+    
+    private func presentThrownError(_ error: Error) {
+        self.isLoading = false
+        self.errorMessage = error.localizedDescription
+        self.showError = true
     }
 }

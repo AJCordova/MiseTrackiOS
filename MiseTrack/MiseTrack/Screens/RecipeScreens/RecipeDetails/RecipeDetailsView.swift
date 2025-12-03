@@ -14,7 +14,6 @@ struct RecipeDetailsView: View {
     @EnvironmentObject var service: ServiceContainer
     @StateObject private var viewModel: RecipeDetailsViewModel
     @State private var showDeleteConfirmation = false
-    @State private var showError = false
     
     @Environment(\.dismiss) var dismiss
     
@@ -234,8 +233,8 @@ struct RecipeDetailsView: View {
         } message: {
             Text("Are you sure you want to delete this recipe? This cannot be undone.")
         }
-        .alert("Error", isPresented: $showError) {
-            Button("OK") { showError = false }
+        .alert("Error", isPresented: $viewModel.showError) {
+            Button("OK") { viewModel.showError = false }
         } message: {
             Text(viewModel.errorMessage ?? "Unknown error")
         }

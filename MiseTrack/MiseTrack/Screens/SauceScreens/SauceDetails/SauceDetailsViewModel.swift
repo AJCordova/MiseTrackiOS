@@ -16,7 +16,9 @@ class SauceDetailsViewModel: ObservableObject {
     @Published var sauce: Sauce
     @Published var amount: Double = 0.00
     @Published var isLoading = false
-    @Published var errorMessage: String? = nil
+    @Published var showError = false
+    
+    var errorMessage: String? = nil
 
     private let sauceService: SauceServicesProtocol
     private let configService: ConfigProviderProtocol
@@ -42,8 +44,7 @@ class SauceDetailsViewModel: ObservableObject {
             _ = try await self.sauceService.updateSauceQuantity(id: self.sauce.id, currentQuantity: self.sauce.currentQuantity - self.amount)
             self.isLoading = false
         } catch {
-            self.errorMessage = error.localizedDescription
-            self.isLoading = false
+            self.presentThrownError(error)
         }
     }
     
@@ -54,44 +55,25 @@ class SauceDetailsViewModel: ObservableObject {
             try await self.sauceService.deleteSauce(id: self.sauce.id)
             self.isLoading = false
         } catch {
-            self.errorMessage = error.localizedDescription
-            self.isLoading = false
+            self.presentThrownError(error)
         }
     }
     
     func getExpirationDate() -> Date {
-        let seconds: TimeInterval = self.batchLimits.batchExpirationInSeconds
-        return sauce.batchDate.addingTimeInterval(seconds)
+        return self.sauceService.getExpirationDate(for: sauce, config: batchLimits)
     }
     
     func getFreshStatus() -> FreshnessStatus {
-        let now = Date()
-        let oneDay: TimeInterval = 86_400
-        let expirationDate = getExpirationDate()
-        
-        if now >= expirationDate {
-            return .expired
-        }
-        
-        if now >= expirationDate - oneDay {
-            return .expiringSoon
-        }
-        
-        return .fresh
+        return self.sauceService.getFreshnessStatus(for: sauce, config: batchLimits)
     }
     
     func getQuantityStatus() -> QuantityStatus {
-        let maxAmount = max(self.batchLimits.batchAmountLimitMl, 0.0001)
-        let currentLevel = min(max(sauce.currentQuantity, 0), maxAmount)
-        
-        if currentLevel <= 0 {
-            return .empty
-        }
-        
-        if (currentLevel / maxAmount <= 0.5) {
-            return .warning
-        }
-        
-        return .stocked
+        return self.sauceService.getQuantityStatus(for: sauce, config: batchLimits)
+    }
+    
+    private func presentThrownError(_ error: Error) {
+        self.isLoading = false
+        self.errorMessage = error.localizedDescription
+        self.showError = true
     }
 }

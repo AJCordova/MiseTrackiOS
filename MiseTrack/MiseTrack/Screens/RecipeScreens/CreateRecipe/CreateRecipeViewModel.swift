@@ -16,8 +16,9 @@ class CreateRecipeViewModel: ObservableObject {
     @Published var instructions: [String] = [""]
     @Published var quantity: Double = 0.00
     @Published var isLoading = false
-    @Published var errorMessage: String? = nil
     @Published var showError: Bool = false
+    
+    var errorMessage: String? = nil
     
     private let recipeService: RecipeServiceProtocol
     
@@ -57,14 +58,18 @@ class CreateRecipeViewModel: ObservableObject {
             self.showError = false
             self.errorMessage = nil
         } catch {
-            self.isLoading = false
-            self.showError = false
-            self.errorMessage = nil
+            self.presentThrownError(error)
         }
     }
     
     private func createNormalizedString(from value: String) -> String {
         return value.removingAllWhiteSpaceAndNewLines().lowercased()
+    }
+    
+    private func presentThrownError(_ error: Error) {
+        self.isLoading = false
+        self.errorMessage = error.localizedDescription
+        self.showError = true
     }
 }
 

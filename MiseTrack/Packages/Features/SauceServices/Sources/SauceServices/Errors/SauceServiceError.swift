@@ -10,7 +10,7 @@ import Foundation
 public enum SauceServiceError: LocalizedError {
     case notFound
     case invalidInput(String)
-    case unknown(Error)
+    case dataServiceError(Error)
     
     public var errorDescription: String? {
         switch self {
@@ -18,8 +18,8 @@ public enum SauceServiceError: LocalizedError {
             return "Sauce not found"
         case .invalidInput(let message):
             return "Invalid input: \(message)"
-        case .unknown(let error):
-            return "Error: \(error.localizedDescription)"
+        case .dataServiceError(let error):
+            return "Data Repository error: \(error.localizedDescription)"
         }
     }
 }

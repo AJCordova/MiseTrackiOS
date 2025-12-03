@@ -17,11 +17,23 @@ public final class RecipeService: RecipeServiceProtocol {
     }
     
     public func getAllRecipes() async throws -> [Recipe] {
-        return try await repository.fetchAll()
+        do {
+            let recipes = try await repository.fetchAll()
+            return recipes
+        } catch {
+            
+            throw RecipeServiceError.dataServiceError(error)
+        }
     }
     
     public func getRecipe(id: String) async throws -> Recipe {
-        return try await repository.fetch(id: id)
+        do {
+            let recipe = try await repository.fetch(id: id)
+            return recipe
+        } catch {
+            throw RecipeServiceError.dataServiceError(error)
+        }
+        
     }
     
     public func createRecipe(name: String,
@@ -43,16 +55,29 @@ public final class RecipeService: RecipeServiceProtocol {
                             unit: unit,
                             volumeMl: volumeML)
         
-        return try await repository.create(recipe)
+        do {
+            let recipe = try await repository.create(recipe)
+            return recipe
+        } catch {
+            throw RecipeServiceError.dataServiceError(error)
+        }
     }
     
     public func updateRecipe(id: String, recipe: Recipe) async throws -> Recipe {
-//        let current = try await repository.fetch(id: id)
-        return try await repository.update(recipe)
+        do {
+            let recipe = try await repository.update(recipe)
+            return recipe
+        } catch {
+            throw RecipeServiceError.dataServiceError(error)
+        }
     }
     
     public func deleteRecipe(id: String) async throws {
-        try await repository.delete(id: id)
+        do {
+            try await repository.delete(id: id)
+        } catch {
+            throw RecipeServiceError.dataServiceError(error)
+        }
     }
     
     

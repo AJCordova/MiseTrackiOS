@@ -17,11 +17,21 @@ public final class SauceService: SauceServicesProtocol {
     }
     
     public func getAllSauces() async throws -> [Sauce] {
-        return try await repository.fetchAll()
+        do {
+            let sauces = try await repository.fetchAll()
+            return sauces
+        } catch {
+            throw SauceServiceError.dataServiceError(error)
+        }
     }
     
     public func getSauce(id: String) async throws -> Sauce {
-        return try await repository.fetch(id: id)
+        do {
+            let sauce = try await repository.fetch(id: id)
+            return sauce
+        } catch {
+            throw SauceServiceError.dataServiceError(error)
+        }
     }
     
     public func createSauce(name: String,
@@ -39,7 +49,13 @@ public final class SauceService: SauceServicesProtocol {
                           unit: unit,
                           batchDate: batchDate)
         
-        return try await repository.create(sauce)
+        do {
+            let sauce = try await repository.create(sauce)
+            return sauce
+        } catch {
+            throw SauceServiceError.dataServiceError(error)
+        }
+
     }
     
     public func updateSauceQuantity(id: String, currentQuantity: Double) async throws -> Sauce {
@@ -51,11 +67,21 @@ public final class SauceService: SauceServicesProtocol {
                             unit: current.unit,
                             batchDate: current.batchDate)
         
-        return try await repository.update(updated)
+        do {
+            let sauce = try await repository.update(updated)
+            return sauce
+        } catch {
+            throw SauceServiceError.dataServiceError(error)
+        }
+        
     }
     
     public func deleteSauce(id: String) async throws {
-        try await repository.delete(id: id)
+        do {
+            try await repository.delete(id: id)
+        } catch {
+            throw SauceServiceError.dataServiceError(error)
+        }
     }
     
     public func getQuantityStatus(for sauce: Models.Sauce, config: Models.BatchLimits) -> Models.QuantityStatus {

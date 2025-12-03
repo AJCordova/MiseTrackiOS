@@ -16,7 +16,9 @@ class RecipeDetailsViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var isEditing = false
     @Published var isSaving = false
-    @Published var errorMessage: String?
+    @Published var showError = false
+    
+    var errorMessage: String? = nil
     
     var isFormValid: Bool {
         if (recipe.displayName.isEmpty ||
@@ -58,8 +60,7 @@ class RecipeDetailsViewModel: ObservableObject {
             } catch {
                 self.isEditing = false
                 self.isSaving = false
-                self.errorMessage = error.localizedDescription
-                self.isLoading = false
+                self.presentThrownError(error)
             }
         }
     }
@@ -72,12 +73,17 @@ class RecipeDetailsViewModel: ObservableObject {
             self.isLoading = false
             self.errorMessage = nil
         } catch {
-            self.isLoading = false
-            self.errorMessage = error.localizedDescription
+            self.presentThrownError(error)
         }
     }
     
     func isEditingEnabled() -> Bool {
         return configService.getBool(.allowRecipeEdit)
+    }
+    
+    private func presentThrownError(_ error: Error) {
+        self.isLoading = false
+        self.errorMessage = error.localizedDescription
+        self.showError = true
     }
 }

@@ -14,7 +14,9 @@ import ConfigService
 class RecipeListViewModel: ObservableObject {
     @Published var recipes: [Recipe] = []
     @Published var isLoading = false
-    @Published var errorMessage: String?
+    @Published var showError = false
+    
+    var errorMessage: String? = nil
     
     private let recipeService: RecipeServiceProtocol
     private let configService: ConfigProviderProtocol
@@ -33,13 +35,18 @@ class RecipeListViewModel: ObservableObject {
             self.isLoading = false
             self.errorMessage = nil
         } catch {
-            self.errorMessage = error.localizedDescription
-            self.isLoading = false
+            self.presentThrownError(error)
         }
     }
     
     func isEditingEnabled() -> Bool {
         return configService.getBool(.allowRecipeEdit)
+    }
+    
+    private func presentThrownError(_ error: Error) {
+        self.isLoading = false
+        self.errorMessage = error.localizedDescription
+        self.showError = true
     }
 }
 

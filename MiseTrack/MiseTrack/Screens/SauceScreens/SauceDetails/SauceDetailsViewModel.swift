@@ -44,9 +44,7 @@ class SauceDetailsViewModel: ObservableObject {
             _ = try await self.sauceService.updateSauceQuantity(id: self.sauce.id, currentQuantity: self.sauce.currentQuantity - self.amount)
             self.isLoading = false
         } catch {
-            self.errorMessage = error.localizedDescription
-            self.isLoading = false
-            self.showError = true
+            self.presentThrownError(error)
         }
     }
     
@@ -57,9 +55,7 @@ class SauceDetailsViewModel: ObservableObject {
             try await self.sauceService.deleteSauce(id: self.sauce.id)
             self.isLoading = false
         } catch {
-            self.errorMessage = error.localizedDescription
-            self.isLoading = false
-            self.showError = true
+            self.presentThrownError(error)
         }
     }
     
@@ -73,5 +69,11 @@ class SauceDetailsViewModel: ObservableObject {
     
     func getQuantityStatus() -> QuantityStatus {
         return self.sauceService.getQuantityStatus(for: sauce, config: batchLimits)
+    }
+    
+    private func presentThrownError(_ error: Error) {
+        self.isLoading = false
+        self.errorMessage = error.localizedDescription
+        self.showError = true
     }
 }

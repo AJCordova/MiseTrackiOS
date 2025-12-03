@@ -35,14 +35,18 @@ class RecipeListViewModel: ObservableObject {
             self.isLoading = false
             self.errorMessage = nil
         } catch {
-            self.errorMessage = error.localizedDescription
-            self.isLoading = false
-            self.showError = true
+            self.presentThrownError(error)
         }
     }
     
     func isEditingEnabled() -> Bool {
         return configService.getBool(.allowRecipeEdit)
+    }
+    
+    private func presentThrownError(_ error: Error) {
+        self.isLoading = false
+        self.errorMessage = error.localizedDescription
+        self.showError = true
     }
 }
 

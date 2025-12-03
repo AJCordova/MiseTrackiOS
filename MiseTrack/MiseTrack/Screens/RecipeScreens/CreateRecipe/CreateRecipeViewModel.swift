@@ -58,14 +58,18 @@ class CreateRecipeViewModel: ObservableObject {
             self.showError = false
             self.errorMessage = nil
         } catch {
-            self.isLoading = false
-            self.showError = true
-            self.errorMessage = error.localizedDescription
+            self.presentThrownError(error)
         }
     }
     
     private func createNormalizedString(from value: String) -> String {
         return value.removingAllWhiteSpaceAndNewLines().lowercased()
+    }
+    
+    private func presentThrownError(_ error: Error) {
+        self.isLoading = false
+        self.errorMessage = error.localizedDescription
+        self.showError = true
     }
 }
 

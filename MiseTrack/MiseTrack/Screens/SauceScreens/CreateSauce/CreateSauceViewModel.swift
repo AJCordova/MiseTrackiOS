@@ -55,9 +55,7 @@ class CreateSauceViewModel: ObservableObject {
             self.errorMessage = nil
             
         } catch {
-            self.isLoading = false
-            self.errorMessage = error.localizedDescription
-            self.showError = true
+            self.presentThrownError(error)
         }
     }
     
@@ -74,10 +72,14 @@ class CreateSauceViewModel: ObservableObject {
             self.isLoading = false
             self.errorMessage = nil
         } catch {
-            self.isLoading = false
-            self.errorMessage = error.localizedDescription
-            self.showError = false
+            self.presentThrownError(error)
         }
+    }
+    
+    private func presentThrownError(_ error: Error) {
+        self.isLoading = false
+        self.errorMessage = error.localizedDescription
+        self.showError = true
     }
 }
 

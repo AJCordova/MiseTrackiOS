@@ -44,9 +44,7 @@ class SauceListViewModel: ObservableObject {
                 self.isLoading = false
                 self.errorMessage = nil
             } catch {
-                self.errorMessage = error.localizedDescription
-                self.isLoading = false
-                self.showError = true
+                self.presentThrownError(error)
             }
         }
     }
@@ -61,5 +59,11 @@ class SauceListViewModel: ObservableObject {
     
     func getQuantityStatus(for sauce: Sauce) -> QuantityStatus {
         return self.sauceService.getQuantityStatus(for: sauce, config: batchLimits)
+    }
+    
+    private func presentThrownError(_ error: Error) {
+        self.isLoading = false
+        self.errorMessage = error.localizedDescription
+        self.showError = true
     }
 }

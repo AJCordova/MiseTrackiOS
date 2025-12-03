@@ -10,7 +10,7 @@ import Foundation
 public enum RecipeServiceError: LocalizedError {
     case notFound
     case invalidInput(String)
-    case unknown(Error)
+    case dataServiceError(Error)
     
     public var errorDescription: String? {
         switch self {
@@ -18,8 +18,8 @@ public enum RecipeServiceError: LocalizedError {
             return "Recipe not found"
         case .invalidInput(let message):
             return "Invalid input: \(message)"
-        case .unknown(let error):
-            return "Error: \(error.localizedDescription)"
+        case .dataServiceError(let error):
+            return "Data Repository error: \(error.localizedDescription)"
         }
     }
 }

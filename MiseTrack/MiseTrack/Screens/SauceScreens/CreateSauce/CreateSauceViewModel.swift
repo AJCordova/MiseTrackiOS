@@ -17,8 +17,10 @@ class CreateSauceViewModel: ObservableObject {
     @Published var selectedRecipe: Recipe?
     @Published var scale: Double = 1.0
     @Published var isLoading = false
-    @Published var errorMessage: String?
+    @Published var showError = false
     @Published var actualYield: Double = 0.00
+    
+    var errorMessage: String? = nil
     
     private let recipeService: RecipeServiceProtocol
     private let sauceService: SauceServicesProtocol
@@ -55,6 +57,7 @@ class CreateSauceViewModel: ObservableObject {
         } catch {
             self.isLoading = false
             self.errorMessage = error.localizedDescription
+            self.showError = true
         }
     }
     
@@ -73,6 +76,7 @@ class CreateSauceViewModel: ObservableObject {
         } catch {
             self.isLoading = false
             self.errorMessage = error.localizedDescription
+            self.showError = false
         }
     }
 }

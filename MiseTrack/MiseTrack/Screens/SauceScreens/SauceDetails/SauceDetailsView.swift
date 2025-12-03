@@ -97,6 +97,11 @@ struct SauceDetailsView: View {
         } message: {
             Text("Are you sure you want to delete this sauce? This cannot be undone.")
         }
+        .alert("Error", isPresented: $viewModel.showError) {
+            Button("OK") { viewModel.showError = false }
+        } message: {
+            Text(viewModel.errorMessage ?? "Unknown error")
+        }
     }
 }
 

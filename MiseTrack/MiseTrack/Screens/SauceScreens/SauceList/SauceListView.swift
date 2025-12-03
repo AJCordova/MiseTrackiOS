@@ -64,6 +64,11 @@ struct SauceListView: View {
                     viewModel.loadSauces()
                 }
             }
+            .alert("Error", isPresented: $viewModel.showError) {
+                Button("OK") { viewModel.showError = false }
+            } message: {
+                Text(viewModel.errorMessage ?? "Unknown error")
+            }
             .task {
                 viewModel.loadSauces()
             }

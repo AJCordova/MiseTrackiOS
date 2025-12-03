@@ -111,6 +111,11 @@ struct CreateSauceView: View {
                     }
                 }
             }
+            .alert("Error", isPresented: $viewModel.showError) {
+                Button("OK") { viewModel.showError = false }
+            } message: {
+                Text(viewModel.errorMessage ?? "Unknown error")
+            }
         }
         .task {
             await viewModel.loadRecipes()

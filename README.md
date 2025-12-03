@@ -4,6 +4,9 @@
 |--------|---------|
 | ![Screen Recording 2025-12-02 at 16 43 14](https://github.com/user-attachments/assets/56d7815c-3b09-4518-8316-e6ce6e0a35a0) | ![Screen Recording 2025-12-02 at 16 45 48](https://github.com/user-attachments/assets/0b266c63-f839-4e8a-a855-d9d7f766da38) |
 
+### Active Development
+This project is under active development. The architecture is stabilizing, but breaking changes may occur as I refine patterns and add features. The core data models and service layer are relatively stable with basic error handling, while UI and advanced features are evolving.
+
 # MiseTrack
 
 A modern iOS application for managing sauce inventory and recipes, built with SwiftUI and Firebase.
@@ -62,7 +65,6 @@ Packages/
 ### ✅ Technical Features
 - [x] Offline-enabled architecture with Firestore persistence
 - [x] Remote configuration management
-- [ ] Comprehensive logging system using OSLog
 - [x] Type-safe unit system preventing measurement errors
 - [x] Async/await for modern concurrency
 - [x] SwiftUI with NavigationStack for modern navigation patterns
@@ -73,8 +75,9 @@ Built with:
  - Swift 6
  - Firebase
 
+### TODOS
 
 ### Active Development
-This project is under active development. The architecture is stabilizing, but breaking changes may occur as we refine patterns and add features. The core data models and service layer are relatively stable, while UI and advanced features are evolving.
+This project is under active development. The architecture is stabilizing, but breaking changes may occur as I refine patterns and add features. The core data models and service layer are relatively stable with basic error handling, while UI and advanced features are evolving.
 
 
